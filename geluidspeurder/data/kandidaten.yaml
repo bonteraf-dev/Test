@@ -1,0 +1,256 @@
+# Kandidaat-geluiden voor 'Het Geluid'.
+#
+# naam  : Nederlandse omschrijving (zo specifiek mogelijk, zoals je hem zou inzenden)
+# cat   : categorie (voor hints als "het komt uit de keuken")
+# en    : Engelse beschrijvingen voor het AI-model (CLAP is in het Engels getraind)
+# k     : verwachte akoestische eigenschappen (zie geluidspeurder/features.py -> KENMERKEN)
+# alias : andere woorden waarmee mensen hetzelfde geluid raden (voor 'al fout geraden')
+#
+# Voeg gerust eigen kandidaten toe of maak een eigen bestand en gebruik --kandidaten.
+
+# ---------------------------------------------------------------- keuken
+- {naam: "Kurk uit een wijnfles trekken", cat: keuken, en: ["a cork popping out of a wine bottle", "uncorking a wine bottle"], k: [impuls, kort], alias: [kurk, wijnfles openen, kurkentrekker]}
+- {naam: "Kroonkurk van een bierflesje wippen", cat: keuken, en: ["opening a beer bottle cap with a bottle opener", "bottle cap popping off"], k: [impuls, kort, hoog], alias: [flesopener, bierdop, kroonkurk]}
+- {naam: "Blikje frisdrank openen", cat: keuken, en: ["opening a soda can", "a can of soda being opened with a fizz"], k: [impuls, ruis, kort], alias: [blikje, frisdrank, cola]}
+- {naam: "Pot met deksel openschroeven (vacuüm plop)", cat: keuken, en: ["opening a glass jar lid with a vacuum pop", "unscrewing a jar lid"], k: [impuls, kort], alias: [pot openen, augurkenpot, jampot]}
+- {naam: "Water in een glas schenken", cat: keuken, en: ["pouring water into a glass", "water being poured into a drinking glass"], k: [ruis, stijgend, continu], alias: [water schenken, inschenken]}
+- {naam: "Fles vullen onder de kraan", cat: keuken, en: ["filling a bottle with water from a tap", "water filling a bottle, rising pitch"], k: [stijgend, ruis, lang], alias: [fles vullen]}
+- {naam: "Koolzuurhoudende drank inschenken (bruisen)", cat: keuken, en: ["pouring a fizzy soft drink into a glass", "carbonated drink fizzing"], k: [ruis, snelle_tikjes, hoog], alias: [bruisen, prik, cola inschenken]}
+- {naam: "IJsblokjes in een glas laten vallen", cat: keuken, en: ["ice cubes dropped into a glass", "ice clinking in a glass"], k: [impuls, galm, hoog, kort], alias: [ijsblokjes]}
+- {naam: "Klinken met twee glazen (proost)", cat: keuken, en: ["two wine glasses clinking together", "a toast with clinking glasses"], k: [impuls, galm, toon, hoog], alias: [proosten, glazen klinken]}
+- {naam: "Waterkoker die aan de kook komt", cat: keuken, en: ["an electric kettle boiling water", "kettle heating up and boiling"], k: [ruis, continu, lang], alias: [waterkoker, koken]}
+- {naam: "Waterkoker die afslaat (klik)", cat: keuken, en: ["an electric kettle switching off with a click", "kettle click"], k: [impuls, kort], alias: [waterkoker klik]}
+- {naam: "Fluitketel die gaat fluiten", cat: keuken, en: ["a whistling tea kettle", "a stovetop kettle whistling"], k: [toon, continu, hoog], alias: [fluitketel]}
+- {naam: "Broodrooster die omhoog springt", cat: keuken, en: ["a toaster popping up toast", "toaster pop"], k: [impuls, galm, kort], alias: [broodrooster, toaster]}
+- {naam: "Magnetron die klaar is (piep)", cat: keuken, en: ["a microwave oven beeping when done", "microwave beep"], k: [toon, ritmisch, hoog], alias: [magnetron piep]}
+- {naam: "Magnetrondeur open- en dichtdoen", cat: keuken, en: ["opening and closing a microwave door", "microwave door latch"], k: [impuls, meerdelig], alias: [magnetron deur]}
+- {naam: "Koelkastdeur dichtdoen (rubber zuig)", cat: keuken, en: ["closing a refrigerator door", "fridge door thud"], k: [impuls, laag, kort], alias: [koelkast, ijskast]}
+- {naam: "Vaatwasser opengaan", cat: keuken, en: ["opening a dishwasher door", "dishwasher rack sliding out"], k: [impuls, meerdelig, galm], alias: [vaatwasser]}
+- {naam: "Bestekla opentrekken (rammelend bestek)", cat: keuken, en: ["opening a drawer full of cutlery", "cutlery rattling in a drawer"], k: [galm, impuls, hoog, snelle_tikjes], alias: [bestek, la, lade]}
+- {naam: "Garde die eieren klopt in een kom", cat: keuken, en: ["whisking eggs in a bowl", "a whisk beating in a metal bowl"], k: [ritmisch, snelle_tikjes, galm], alias: [garde, eieren kloppen, klutsen]}
+- {naam: "Ei breken op de rand van een kom", cat: keuken, en: ["cracking an egg on a bowl", "egg shell cracking"], k: [impuls, kort], alias: [ei breken]}
+- {naam: "Spek of ei bakken in de koekenpan", cat: keuken, en: ["bacon sizzling in a frying pan", "frying food sizzling"], k: [ruis, snelle_tikjes, continu, hoog], alias: [bakken, sissen, koekenpan]}
+- {naam: "Popcorn poppen", cat: keuken, en: ["popcorn popping", "corn kernels popping in a pot"], k: [impuls, snelle_tikjes, lang], alias: [popcorn]}
+- {naam: "Groente snijden op een snijplank", cat: keuken, en: ["chopping vegetables on a wooden cutting board", "knife chopping"], k: [impuls, ritmisch], alias: [snijden, snijplank, hakken]}
+- {naam: "Mes slijpen", cat: keuken, en: ["sharpening a knife", "knife being honed on a sharpening steel"], k: [ruis, ritmisch, hoog, galm], alias: [messen slijpen, aanzetstaal]}
+- {naam: "Kaasschaaf / rasp over kaas", cat: keuken, en: ["grating cheese on a grater", "cheese grater scraping"], k: [ruis, ritmisch], alias: [rasp, kaas raspen]}
+- {naam: "Blender / staafmixer aanzetten", cat: keuken, en: ["a blender running", "a hand blender mixing"], k: [toon, continu, ruis], alias: [blender, mixer, staafmixer]}
+- {naam: "Koffiemolen bonen malen", cat: keuken, en: ["a coffee grinder grinding beans", "grinding coffee"], k: [ruis, continu, snelle_tikjes], alias: [koffiemolen]}
+- {naam: "Koffiezetapparaat / espressomachine", cat: keuken, en: ["an espresso machine brewing", "coffee machine pumping and hissing"], k: [toon, continu, ruis, lang], alias: [koffiezetapparaat, espresso, senseo, nespresso]}
+- {naam: "Melk opschuimen met stoompijpje", cat: keuken, en: ["steaming milk with an espresso machine wand", "milk frother hissing"], k: [ruis, continu, stijgend], alias: [melkopschuimer]}
+- {naam: "Pepermolen draaien", cat: keuken, en: ["grinding a pepper mill", "pepper grinder crunching"], k: [snelle_tikjes, ruis, kort], alias: [pepermolen, zoutmolen]}
+- {naam: "Pannendeksel dat op een pan valt / rammelt", cat: keuken, en: ["a pot lid rattling", "a saucepan lid dropped on a pan"], k: [galm, impuls, stuiteren], alias: [pannendeksel, deksel]}
+- {naam: "Pan op het fornuis zetten", cat: keuken, en: ["placing a metal pan on a stove", "pot set down on a gas stove"], k: [impuls, galm, laag], alias: [pan neerzetten]}
+- {naam: "Gasfornuis aansteken (klik-klik-klik-woesj)", cat: keuken, en: ["igniting a gas stove burner with clicking", "gas stove clicking then whoosh of flame"], k: [ritmisch, impuls, meerdelig], alias: [gasfornuis, fornuis aansteken]}
+- {naam: "Borden op elkaar stapelen", cat: keuken, en: ["stacking ceramic plates", "plates clattering"], k: [impuls, galm], alias: [borden stapelen]}
+- {naam: "Lepeltje roeren in een kopje", cat: keuken, en: ["stirring a teaspoon in a ceramic cup", "spoon clinking in a coffee mug"], k: [ritmisch, galm, hoog], alias: [roeren, theelepel]}
+- {naam: "Aluminiumfolie afscheuren", cat: keuken, en: ["tearing aluminum foil from a roll", "crinkling tin foil"], k: [ruis, hoog, kort], alias: [aluminiumfolie, zilverpapier]}
+- {naam: "Huishoudfolie afrollen", cat: keuken, en: ["pulling plastic cling film off a roll", "plastic wrap unrolling"], k: [ruis, kort], alias: [vershoudfolie, huishoudfolie]}
+- {naam: "Chipszak openen / erin graaien", cat: keuken, en: ["opening a bag of chips", "crinkling a crisp packet"], k: [ruis, hoog], alias: [chipszak, zak chips]}
+- {naam: "Hap van een appel", cat: eten_drinken, en: ["biting into a crisp apple", "apple crunch"], k: [impuls, ruis, kort], alias: [appel, appel eten]}
+- {naam: "Slurpen door een rietje (bijna leeg)", cat: eten_drinken, en: ["slurping the last of a drink through a straw", "drinking straw gurgling"], k: [ruis, snelle_tikjes], alias: [rietje, slurpen]}
+- {naam: "Bubbels blazen door een rietje", cat: eten_drinken, en: ["blowing bubbles through a straw into a drink", "bubbling liquid through a straw"], k: [snelle_tikjes, ruis], alias: [bellen blazen in drinken]}
+- {naam: "Slagroomspuit gebruiken", cat: keuken, en: ["a whipped cream can spraying", "aerosol whipped cream dispenser"], k: [ruis, continu], alias: [slagroomspuit, spuitbus slagroom]}
+- {naam: "Tupperware/bakje dichtklikken", cat: keuken, en: ["snapping a plastic food container lid shut", "plastic container lid click"], k: [impuls, kort], alias: [bakje, tupperware]}
+- {naam: "Zak rijst / macaroni schudden", cat: keuken, en: ["shaking a bag of dry pasta", "uncooked rice shaking in a box"], k: [snelle_tikjes, ruis], alias: [rijst, macaroni, pasta schudden]}
+
+# ---------------------------------------------------------------- badkamer
+- {naam: "Wc doortrekken", cat: badkamer, en: ["a toilet flushing", "flushing toilet"], k: [ruis, continu, lang], alias: [toilet doortrekken, wc]}
+- {naam: "Wc-bril dichtklappen", cat: badkamer, en: ["a toilet seat lid closing", "toilet lid slamming"], k: [impuls, laag, kort], alias: [wc bril, toiletbril]}
+- {naam: "Wc-rol afrollen", cat: badkamer, en: ["unrolling toilet paper", "toilet paper roll spinning"], k: [ruis, kort], alias: [wc papier, toiletpapier]}
+- {naam: "Douche aanzetten", cat: badkamer, en: ["a shower running", "water spraying from a shower head"], k: [ruis, continu, hoog], alias: [douche, douchen]}
+- {naam: "Bad leeg laten lopen (gorgelend putje)", cat: badkamer, en: ["water draining from a bathtub", "drain gurgling"], k: [ruis, dalend], alias: [bad leeg, afvoer, putje]}
+- {naam: "Tanden poetsen met elektrische tandenborstel", cat: badkamer, en: ["an electric toothbrush buzzing", "brushing teeth with an electric toothbrush"], k: [toon, continu], alias: [elektrische tandenborstel, tandenborstel]}
+- {naam: "Tanden poetsen met gewone tandenborstel", cat: badkamer, en: ["brushing teeth", "manual toothbrush scrubbing"], k: [ruis, ritmisch], alias: [tanden poetsen]}
+- {naam: "Gorgelen", cat: badkamer, en: ["a person gargling water", "gargling mouthwash"], k: [snelle_tikjes, toon], alias: [gorgelen, mondwater]}
+- {naam: "Föhn aanzetten", cat: badkamer, en: ["a hair dryer blowing", "hairdryer running"], k: [ruis, toon, continu], alias: [föhn, fohn, haardroger]}
+- {naam: "Scheerapparaat", cat: badkamer, en: ["an electric shaver buzzing", "electric razor shaving"], k: [toon, continu], alias: [scheerapparaat, scheren, tondeuse]}
+- {naam: "Deodorant/spuitbus spuiten", cat: badkamer, en: ["spraying an aerosol deodorant can", "aerosol spray hiss"], k: [ruis, hoog, kort], alias: [deo, spuitbus, haarlak]}
+- {naam: "Spuitbus schudden (balletje rammelt)", cat: badkamer, en: ["shaking a spray paint can with the ball rattling", "aerosol can rattle"], k: [ritmisch, galm, snelle_tikjes], alias: [spuitbus schudden]}
+- {naam: "Tube tandpasta uitknijpen", cat: badkamer, en: ["squeezing a toothpaste tube", "squeezing a plastic tube"], k: [ruis, kort], alias: [tandpasta]}
+- {naam: "Pompje van zeeppompje / handzeep", cat: badkamer, en: ["pumping a liquid soap dispenser", "soap pump squirt"], k: [impuls, kort], alias: [zeeppompje, handzeep]}
+- {naam: "Nagelknipper", cat: badkamer, en: ["clipping fingernails with a nail clipper", "nail clipper click"], k: [impuls, kort, hoog], alias: [nagels knippen, nagelknipper]}
+- {naam: "Douchegordijn opentrekken (ringen over stang)", cat: badkamer, en: ["a shower curtain being pulled open on rings", "curtain rings sliding on a rod"], k: [snelle_tikjes, galm, kort], alias: [douchegordijn, gordijn]}
+
+# ---------------------------------------------------------------- huis
+- {naam: "Deur dichtslaan", cat: huis, en: ["a door slamming shut", "door slam"], k: [impuls, laag, kort], alias: [deur dicht, deur]}
+- {naam: "Piepende deur", cat: huis, en: ["a creaky door opening slowly", "squeaky door hinge"], k: [toon, lang], alias: [krakende deur]}
+- {naam: "Deurklink naar beneden drukken", cat: huis, en: ["pressing down a door handle", "door handle latch click"], k: [impuls, kort], alias: [deurklink, klink]}
+- {naam: "Sleutel in het slot omdraaien", cat: huis, en: ["turning a key in a door lock", "unlocking a door with a key"], k: [impuls, snelle_tikjes, kort], alias: [sleutel omdraaien, slot]}
+- {naam: "Sleutelbos rammelen", cat: persoonlijk, en: ["a bunch of keys jingling", "keys jangling"], k: [galm, hoog, snelle_tikjes], alias: [sleutels, sleutelbos]}
+- {naam: "Sleutelbos op tafel gooien", cat: persoonlijk, en: ["keys dropped on a table", "throwing keys onto a wooden table"], k: [impuls, galm, hoog, kort], alias: [sleutels neergooien]}
+- {naam: "Deurbel (ding-dong)", cat: huis, en: ["a doorbell ringing ding dong", "door chime"], k: [toon, galm], alias: [deurbel, bel]}
+- {naam: "Brievenbus klep", cat: huis, en: ["a letterbox flap snapping shut", "mail slot flap"], k: [impuls, galm, kort], alias: [brievenbus, post]}
+- {naam: "Rolluik naar beneden laten", cat: huis, en: ["a roller shutter rolling down", "rolling shutter rattling"], k: [snelle_tikjes, lang], alias: [rolluik]}
+- {naam: "Lichtschakelaar aan/uit", cat: huis, en: ["a light switch being flipped", "light switch click"], k: [impuls, kort], alias: [lichtknopje, schakelaar]}
+- {naam: "Stekker uit het stopcontact trekken", cat: huis, en: ["pulling a plug out of a wall socket", "unplugging a power plug"], k: [impuls, kort], alias: [stekker, stopcontact]}
+- {naam: "Gordijnen dichtschuiven", cat: huis, en: ["curtains being drawn on a rail", "sliding curtains closed"], k: [ruis, snelle_tikjes], alias: [gordijnen]}
+- {naam: "Raam openschuiven / kantelraam", cat: huis, en: ["opening a window", "window latch and sliding"], k: [impuls, meerdelig], alias: [raam openen]}
+- {naam: "Stoel over de vloer schuiven", cat: huis, en: ["a chair scraping across a floor", "dragging a chair on tiles"], k: [toon, ruis, kort], alias: [stoel schuiven]}
+- {naam: "Bureaustoel draaien / rollen", cat: huis, en: ["an office chair squeaking and rolling", "swivel chair creaking"], k: [toon, ruis], alias: [bureaustoel]}
+- {naam: "Krakende trap / vloer", cat: huis, en: ["a creaking wooden floorboard", "creaky stairs"], k: [toon, kort], alias: [krakende vloer, trap]}
+- {naam: "Voetstappen op houten vloer", cat: huis, en: ["footsteps on a wooden floor", "walking on floorboards"], k: [impuls, ritmisch, laag], alias: [voetstappen, lopen]}
+- {naam: "Voetstappen op grind", cat: buiten, en: ["footsteps on gravel", "walking on gravel"], k: [ruis, ritmisch], alias: [grind]}
+- {naam: "Klok die tikt", cat: huis, en: ["a clock ticking", "wall clock tick tock"], k: [impuls, ritmisch, hoog], alias: [klok, tikken]}
+- {naam: "Wekker die afgaat", cat: huis, en: ["an alarm clock ringing", "alarm clock beeping"], k: [toon, ritmisch], alias: [wekker]}
+- {naam: "Mechanische kookwekker opdraaien", cat: huis, en: ["winding a mechanical kitchen timer", "egg timer ticking"], k: [snelle_tikjes, ritmisch], alias: [kookwekker, eierwekker]}
+- {naam: "Stofzuiger aanzetten", cat: huis, en: ["a vacuum cleaner starting and running", "vacuum cleaner"], k: [toon, ruis, continu, lang, stijgend], alias: [stofzuiger, stofzuigen]}
+- {naam: "Stofzuigersnoer dat oprolt", cat: huis, en: ["a vacuum cleaner cord retracting", "cable reel rewinding quickly"], k: [snelle_tikjes, ruis, kort], alias: [snoer oprollen]}
+- {naam: "Wasmachine centrifugeren", cat: huis, en: ["a washing machine spinning", "washing machine spin cycle"], k: [toon, continu, stijgend, lang], alias: [wasmachine, centrifuge]}
+- {naam: "Wasknijpers in een bak", cat: huis, en: ["clothespins rattling in a plastic bin", "wooden clothes pegs"], k: [impuls, snelle_tikjes], alias: [wasknijpers]}
+- {naam: "Strijkijzer stomen", cat: huis, en: ["a steam iron hissing", "iron releasing steam"], k: [ruis, kort], alias: [strijkijzer, strijken]}
+- {naam: "Strijkplank uitklappen", cat: huis, en: ["unfolding an ironing board", "ironing board metal legs clanking"], k: [impuls, galm, meerdelig], alias: [strijkplank]}
+- {naam: "Lucifer aansteken", cat: huis, en: ["striking a match", "match being lit"], k: [ruis, impuls, kort], alias: [lucifer, luciferdoosje]}
+- {naam: "Aansteker (vuursteen) aanklikken", cat: huis, en: ["flicking a lighter", "lighter flint click"], k: [impuls, kort], alias: [aansteker]}
+- {naam: "Kaars uitblazen", cat: huis, en: ["blowing out a candle", "a puff of breath"], k: [ruis, kort], alias: [kaars]}
+- {naam: "Openhaard knapperend vuur", cat: huis, en: ["a crackling fireplace", "wood fire crackling"], k: [impuls, snelle_tikjes, lang], alias: [openhaard, vuur, kampvuur]}
+- {naam: "Afstandsbediening op tafel leggen", cat: huis, en: ["putting a remote control on a table", "plastic object set down"], k: [impuls, kort], alias: [afstandsbediening]}
+- {naam: "Batterijen in een bakje / rollen", cat: huis, en: ["batteries rattling", "AA batteries rolling on a table"], k: [impuls, galm, snelle_tikjes], alias: [batterijen]}
+- {naam: "Vuilniszak dichtknopen / openschudden", cat: huis, en: ["shaking open a plastic garbage bag", "plastic bin bag rustling"], k: [ruis], alias: [vuilniszak]}
+- {naam: "Pedaalemmer (klep die dichtvalt)", cat: huis, en: ["a pedal bin lid closing", "trash can lid slamming"], k: [impuls, galm, kort], alias: [pedaalemmer, prullenbak]}
+- {naam: "Kliko / container deksel dichtslaan", cat: buiten, en: ["a wheelie bin lid slamming shut", "plastic garbage container lid"], k: [impuls, laag, kort], alias: [kliko, container]}
+- {naam: "Bed/matras met springveren", cat: huis, en: ["bed springs creaking", "bouncing on a spring mattress"], k: [toon, ritmisch], alias: [bed, matras]}
+- {naam: "Kussen opschudden", cat: huis, en: ["fluffing a pillow", "patting a cushion"], k: [ruis, impuls, laag], alias: [kussen]}
+- {naam: "Rolgordijn omhoog laten schieten", cat: huis, en: ["a roller blind snapping up", "window blind retracting fast"], k: [snelle_tikjes, impuls], alias: [rolgordijn]}
+- {naam: "Lamellen / jaloezie dichtdraaien", cat: huis, en: ["venetian blinds clattering", "window blinds slats rattling"], k: [snelle_tikjes, ruis], alias: [jaloezie, lamellen]}
+- {naam: "Radiator ontluchten (sissen)", cat: huis, en: ["bleeding a radiator with air hissing", "air hissing out of a valve"], k: [ruis, continu, hoog], alias: [radiator ontluchten, cv]}
+- {naam: "Telefoon trilt op tafel", cat: persoonlijk, en: ["a mobile phone vibrating on a table", "phone buzzing on wood"], k: [toon, ritmisch, laag], alias: [telefoon trillen, gsm]}
+- {naam: "Foto maken met smartphone (sluitergeluid)", cat: persoonlijk, en: ["a camera shutter click", "smartphone camera shutter sound"], k: [impuls, kort], alias: [foto, camera]}
+
+# ---------------------------------------------------------------- kantoor / school
+- {naam: "Nietmachine", cat: kantoor, en: ["a stapler stapling paper", "stapler crunch"], k: [impuls, kort], alias: [nietjes, nieten]}
+- {naam: "Perforator", cat: kantoor, en: ["a hole puncher punching paper", "paper hole punch"], k: [impuls, kort], alias: [perforator, gaatjes]}
+- {naam: "Plakband van de rol trekken", cat: kantoor, en: ["pulling sticky tape off a roll", "adhesive tape ripping"], k: [ruis, snelle_tikjes, kort], alias: [plakband, tape]}
+- {naam: "Plakbandroller / afroller met kartelmes", cat: kantoor, en: ["tape dispenser tearing tape", "packing tape gun"], k: [ruis, impuls, kort], alias: [tape roller, afroller]}
+- {naam: "Papier verfrommelen", cat: kantoor, en: ["crumpling a sheet of paper", "paper crinkling"], k: [ruis, snelle_tikjes, hoog], alias: [papier verfrommelen, prop]}
+- {naam: "Papier scheuren", cat: kantoor, en: ["tearing paper", "ripping a sheet of paper"], k: [ruis, kort], alias: [papier scheuren]}
+- {naam: "Bladzijden omslaan / boek doorbladeren", cat: kantoor, en: ["flipping through the pages of a book", "turning book pages"], k: [ruis, snelle_tikjes], alias: [boek, bladeren]}
+- {naam: "Schrijven met krijt op een schoolbord", cat: kantoor, en: ["writing with chalk on a blackboard", "chalk on chalkboard"], k: [ruis, impuls, toon], alias: [krijt, schoolbord]}
+- {naam: "Potlood slijpen", cat: kantoor, en: ["sharpening a pencil", "pencil sharpener"], k: [ruis, ritmisch], alias: [puntenslijper, potlood]}
+- {naam: "Typen op een toetsenbord", cat: kantoor, en: ["typing on a computer keyboard", "keyboard clicking"], k: [impuls, snelle_tikjes], alias: [toetsenbord, typen]}
+- {naam: "Typemachine", cat: kantoor, en: ["an old typewriter typing with bell", "typewriter keys"], k: [impuls, ritmisch, galm], alias: [typemachine]}
+- {naam: "Muis klikken", cat: kantoor, en: ["clicking a computer mouse", "mouse click"], k: [impuls, kort, hoog], alias: [computermuis]}
+- {naam: "Balpen klikken", cat: kantoor, en: ["clicking a ballpoint pen", "retractable pen click"], k: [impuls, kort, hoog], alias: [pen klikken, balpen]}
+- {naam: "Schaar die papier knipt", cat: kantoor, en: ["scissors cutting paper", "snipping with scissors"], k: [impuls, ruis, ritmisch], alias: [schaar, knippen]}
+- {naam: "Printer die papier uitprint", cat: kantoor, en: ["a printer printing a page", "inkjet printer"], k: [toon, continu, ritmisch], alias: [printer]}
+- {naam: "Papierversnipperaar", cat: kantoor, en: ["a paper shredder", "shredding paper"], k: [toon, ruis, continu], alias: [versnipperaar]}
+- {naam: "Envelop openscheuren", cat: kantoor, en: ["tearing open an envelope", "envelope ripping"], k: [ruis, kort], alias: [envelop]}
+- {naam: "Rolmaat die terugschiet", cat: gereedschap, en: ["a tape measure retracting and snapping shut", "measuring tape snapping back"], k: [snelle_tikjes, impuls, galm, kort], alias: [rolmaat, meetlint]}
+- {naam: "Paperclip / punaise in een doosje schudden", cat: kantoor, en: ["shaking a box of paper clips", "small metal objects rattling in a tin"], k: [snelle_tikjes, galm, hoog], alias: [paperclips, punaises]}
+- {naam: "Klittenband losscheuren", cat: kleding, en: ["ripping velcro apart", "hook and loop fastener tearing"], k: [ruis, snelle_tikjes, kort], alias: [klittenband, velcro]}
+
+# ---------------------------------------------------------------- kleding / persoonlijk
+- {naam: "Rits van een jas dichtritsen", cat: kleding, en: ["a zipper being zipped up", "zipping up a jacket"], k: [snelle_tikjes, ruis, kort, stijgend], alias: [rits, ritssluiting, jas dicht]}
+- {naam: "Rits van een tent openritsen", cat: kleding, en: ["unzipping a tent zipper", "long tent zipper"], k: [snelle_tikjes, ruis, lang], alias: [tent, tentrits]}
+- {naam: "Drukknopen losmaken", cat: kleding, en: ["unsnapping press studs on a jacket", "snap buttons popping open"], k: [impuls, kort], alias: [drukknoop, drukknopen]}
+- {naam: "Riem door de lussen trekken / gesp", cat: kleding, en: ["a leather belt buckle being fastened", "metal belt buckle jingling"], k: [galm, impuls], alias: [riem, gesp]}
+- {naam: "Schoenveters strikken", cat: kleding, en: ["tying shoelaces", "laces rubbing"], k: [ruis], alias: [veters]}
+- {naam: "Hakken op straat lopen", cat: kleding, en: ["high heels walking on a hard floor", "stiletto heels footsteps"], k: [impuls, ritmisch, hoog], alias: [hakken, pumps]}
+- {naam: "Paraplu openklappen", cat: persoonlijk, en: ["opening an umbrella", "umbrella popping open"], k: [ruis, impuls, kort], alias: [paraplu]}
+- {naam: "Portemonnee met klittenband / muntjes", cat: persoonlijk, en: ["coins jingling in a wallet", "change rattling in a purse"], k: [galm, snelle_tikjes, hoog], alias: [portemonnee, kleingeld, muntjes]}
+- {naam: "Munt die op tafel tolt en uitdraait", cat: persoonlijk, en: ["a coin spinning on a table and settling", "coin spinning down faster and faster"], k: [stuiteren, galm, hoog, snelle_tikjes], alias: [munt tollen, muntje, euromunt]}
+- {naam: "Munt in een spaarpot gooien", cat: persoonlijk, en: ["dropping a coin into a piggy bank", "coin falling into a ceramic piggy bank"], k: [impuls, galm, hoog], alias: [spaarpot]}
+- {naam: "Bril in een brillenkoker dichtklappen", cat: persoonlijk, en: ["snapping a glasses case shut", "spectacle case closing"], k: [impuls, kort], alias: [brillenkoker, brillendoos]}
+- {naam: "Handtas met magneetsluiting", cat: persoonlijk, en: ["a handbag magnetic clasp closing", "purse snap closure"], k: [impuls, kort], alias: [handtas, tas]}
+- {naam: "Kauwgom kauwen / bel laten knappen", cat: persoonlijk, en: ["chewing gum and popping a bubble", "bubble gum pop"], k: [impuls, kort], alias: [kauwgom, kauwgombel]}
+- {naam: "Vingers knippen", cat: persoonlijk, en: ["snapping fingers", "finger snap"], k: [impuls, kort, hoog], alias: [vingerknip, knippen met vingers]}
+- {naam: "Knokkels laten kraken", cat: persoonlijk, en: ["cracking knuckles", "knuckle crack"], k: [impuls, kort], alias: [knakken, knokkels]}
+- {naam: "In de handen klappen", cat: persoonlijk, en: ["a single hand clap", "clapping hands"], k: [impuls, kort], alias: [klappen, applaus]}
+- {naam: "Neus snuiten", cat: persoonlijk, en: ["blowing your nose into a tissue", "nose blowing"], k: [ruis, toon, kort], alias: [neus snuiten, zakdoek]}
+- {naam: "Tissue uit een doos trekken", cat: persoonlijk, en: ["pulling a tissue from a box", "tissue paper rustle"], k: [ruis, kort], alias: [tissue, papieren zakdoek]}
+- {naam: "Lippenstift dop eraf / erop", cat: persoonlijk, en: ["popping the cap off a lipstick", "small cap pop"], k: [impuls, kort], alias: [lippenstift]}
+- {naam: "Horloge opwinden", cat: persoonlijk, en: ["winding a mechanical watch", "watch crown ratcheting"], k: [snelle_tikjes, hoog], alias: [horloge]}
+
+# ---------------------------------------------------------------- gereedschap / klussen
+- {naam: "Boormachine", cat: gereedschap, en: ["an electric drill drilling", "power drill whirring"], k: [toon, continu, stijgend], alias: [boren, boormachine]}
+- {naam: "Accuschroevendraaier", cat: gereedschap, en: ["a cordless screwdriver", "electric screwdriver ratcheting"], k: [toon, snelle_tikjes], alias: [schroevendraaier, accuboor]}
+- {naam: "Ratelsleutel", cat: gereedschap, en: ["a ratchet wrench clicking", "socket wrench ratchet"], k: [snelle_tikjes, ritmisch, hoog], alias: [ratel, steeksleutel]}
+- {naam: "Hamer op een spijker", cat: gereedschap, en: ["hammering a nail into wood", "hammer strikes"], k: [impuls, ritmisch, galm], alias: [hamer, spijker]}
+- {naam: "Zagen met een handzaag", cat: gereedschap, en: ["sawing wood with a hand saw", "hand saw cutting"], k: [ruis, ritmisch], alias: [zaag, zagen]}
+- {naam: "Schuren met schuurpapier", cat: gereedschap, en: ["sanding wood with sandpaper", "sandpaper scraping"], k: [ruis, ritmisch], alias: [schuren, schuurpapier]}
+- {naam: "Kitpistool", cat: gereedschap, en: ["a caulking gun ratcheting", "caulk gun clicking"], k: [impuls, ritmisch], alias: [kitspuit, kit]}
+- {naam: "Duct tape / ducttape van rol scheuren", cat: gereedschap, en: ["ripping duct tape off a roll", "loud tape tearing"], k: [ruis, snelle_tikjes], alias: [ducttape, duct tape]}
+- {naam: "Schroeven in een potje schudden", cat: gereedschap, en: ["shaking a jar of screws", "screws rattling in a glass jar"], k: [snelle_tikjes, galm, hoog], alias: [schroeven, spijkers]}
+- {naam: "Waterpomptang / nijptang", cat: gereedschap, en: ["pliers clicking", "metal tool snipping wire"], k: [impuls, galm, kort], alias: [tang, kniptang]}
+- {naam: "Verfblik openwrikken / dichtslaan", cat: gereedschap, en: ["opening a paint can lid", "tapping a paint tin lid shut"], k: [impuls, galm], alias: [verfblik]}
+- {naam: "Ladder uitklappen", cat: gereedschap, en: ["unfolding an aluminium ladder", "metal ladder clanking"], k: [impuls, galm, meerdelig], alias: [ladder, trap]}
+- {naam: "Kettingzaag starten", cat: gereedschap, en: ["a chainsaw starting", "chainsaw engine revving"], k: [toon, continu, ruis], alias: [kettingzaag]}
+- {naam: "Grasmaaier starten (trekkoord)", cat: buiten, en: ["pulling the cord to start a lawn mower", "lawnmower engine starting"], k: [toon, continu, meerdelig], alias: [grasmaaier]}
+- {naam: "Heggenschaar", cat: buiten, en: ["hedge shears clipping", "garden shears snipping"], k: [impuls, ritmisch], alias: [heggenschaar, snoeischaar]}
+
+# ---------------------------------------------------------------- speelgoed / spel / sport
+- {naam: "Pingpongbal die stuitert op tafel", cat: spel, en: ["a ping pong ball bouncing on a table and coming to rest", "table tennis ball bouncing"], k: [stuiteren, impuls, hoog], alias: [pingpongbal, tafeltennisbal, pingpong]}
+- {naam: "Basketbal stuiteren", cat: sport, en: ["a basketball bouncing on a court", "dribbling a basketball"], k: [impuls, ritmisch, laag, galm], alias: [basketbal, bal stuiteren]}
+- {naam: "Tennisbal tegen een racket", cat: sport, en: ["a tennis ball hit by a racket", "tennis racket hitting ball"], k: [impuls, kort], alias: [tennis, tennisbal]}
+- {naam: "Golfbal die in de hole valt", cat: sport, en: ["a golf ball dropping into the cup", "golf ball rattling in the hole"], k: [impuls, galm, stuiteren], alias: [golf, golfbal]}
+- {naam: "Knikkers die rollen / botsen", cat: spel, en: ["marbles rolling and clicking together", "glass marbles colliding"], k: [impuls, galm, hoog, stuiteren], alias: [knikkers, knikker]}
+- {naam: "Dobbelstenen gooien", cat: spel, en: ["rolling dice on a table", "dice rattling in a cup and thrown"], k: [impuls, snelle_tikjes, stuiteren], alias: [dobbelsteen, dobbelstenen, yahtzee]}
+- {naam: "Kaarten schudden", cat: spel, en: ["shuffling a deck of playing cards", "riffle shuffling cards"], k: [snelle_tikjes, ruis, kort], alias: [kaarten, kaartspel]}
+- {naam: "Sjoelen (schijven over de bak)", cat: spel, en: ["sliding wooden discs on a shuffleboard", "wooden pucks sliding and clacking"], k: [ruis, impuls, meerdelig], alias: [sjoelbak, sjoelen]}
+- {naam: "Schaakstuk / damsteen op het bord zetten", cat: spel, en: ["placing a chess piece on a wooden board", "wooden game piece click"], k: [impuls, kort], alias: [schaken, dammen]}
+- {naam: "Jenga-toren die omvalt", cat: spel, en: ["a wooden block tower collapsing", "wooden blocks falling"], k: [impuls, snelle_tikjes, stuiteren], alias: [jenga, blokken]}
+- {naam: "Legoblokjes zoeken in een bak", cat: spel, en: ["rummaging through a box of lego bricks", "plastic bricks rattling"], k: [snelle_tikjes, hoog, ruis], alias: [lego]}
+- {naam: "Ballon opblazen", cat: spel, en: ["inflating a balloon", "blowing up a balloon"], k: [ruis, stijgend], alias: [ballon opblazen]}
+- {naam: "Ballon die knapt", cat: spel, en: ["a balloon popping", "balloon burst"], k: [impuls, kort], alias: [ballon knappen, knallen]}
+- {naam: "Ballon laten leeglopen (piepend)", cat: spel, en: ["letting air out of a balloon squealing", "balloon deflating with a squeak"], k: [toon, dalend], alias: [ballon leeglopen]}
+- {naam: "Fietsbel", cat: vervoer, en: ["a bicycle bell ringing", "bike bell ring"], k: [toon, galm, hoog], alias: [fietsbel, bel]}
+- {naam: "Fietspomp", cat: vervoer, en: ["pumping a bicycle tire with a hand pump", "bike pump"], k: [ruis, ritmisch], alias: [fietspomp, band oppompen]}
+- {naam: "Freewheel van een fiets (achterwiel draait uit)", cat: vervoer, en: ["a bicycle freewheel clicking", "bike wheel spinning with ratchet clicks"], k: [snelle_tikjes, ritmisch, dalend], alias: [freewheel, fietswiel, fietsketting]}
+- {naam: "Fietsstandaard uitklappen", cat: vervoer, en: ["kicking down a bicycle kickstand", "bike stand click"], k: [impuls, galm, kort], alias: [standaard, fietsstandaard]}
+- {naam: "Fietsslot (ringslot) dichtdoen", cat: vervoer, en: ["locking a bicycle frame lock", "bike lock snapping shut"], k: [impuls, galm, kort], alias: [fietsslot, ringslot]}
+- {naam: "Kettingslot rammelen", cat: vervoer, en: ["a heavy bike chain lock rattling", "metal chain clinking"], k: [galm, snelle_tikjes], alias: [kettingslot]}
+- {naam: "Springtouw tegen de grond", cat: sport, en: ["a skipping rope hitting the ground", "jump rope swishing"], k: [ritmisch, ruis], alias: [springtouw]}
+- {naam: "Scheidsrechtersfluitje", cat: sport, en: ["a referee whistle blowing", "pea whistle"], k: [toon, hoog, kort], alias: [fluitje, fluit]}
+- {naam: "Jojo", cat: spel, en: ["a yo-yo spinning on its string", "yoyo whirring"], k: [toon, ritmisch], alias: [jojo]}
+- {naam: "Tol die draait en omvalt", cat: spel, en: ["a spinning top spinning and falling over", "top spinning on a table"], k: [toon, stuiteren, galm], alias: [tol, tollen]}
+- {naam: "Opwindspeelgoed / speeldoos", cat: spel, en: ["a wind-up music box", "winding a toy mechanism"], k: [toon, ritmisch, galm], alias: [speeldoos, opwindspeelgoed]}
+- {naam: "Waterpistool spuiten", cat: spel, en: ["a water pistol squirting", "water gun spray"], k: [ruis, kort], alias: [waterpistool]}
+- {naam: "Bowlingbal die kegels raakt", cat: sport, en: ["a bowling ball striking pins", "bowling strike"], k: [impuls, laag, galm], alias: [bowlen, bowling]}
+- {naam: "Klap met een vliegenmepper", cat: huis, en: ["swatting with a fly swatter", "fly swatter slap"], k: [impuls, ruis, kort], alias: [vliegenmepper]}
+
+# ---------------------------------------------------------------- verpakking
+- {naam: "Bubbeltjesplastic knappen", cat: verpakking, en: ["popping bubble wrap", "bubble wrap pops"], k: [impuls, snelle_tikjes], alias: [noppenfolie, bubbeltjesplastic]}
+- {naam: "Kartonnen doos openscheuren", cat: verpakking, en: ["opening a cardboard box", "tearing cardboard flaps"], k: [ruis, impuls], alias: [doos openen, karton]}
+- {naam: "Plastic fles indeuken (krakend)", cat: verpakking, en: ["crushing a plastic water bottle", "plastic bottle crinkling"], k: [ruis, impuls, snelle_tikjes], alias: [plastic fles, flesje]}
+- {naam: "Blikje plat stampen", cat: verpakking, en: ["crushing an aluminium can", "can being crushed"], k: [impuls, ruis, kort], alias: [blikje plat]}
+- {naam: "Doosje Tic Tac schudden", cat: verpakking, en: ["shaking a small box of mints", "tic tac box rattling"], k: [snelle_tikjes, ritmisch, hoog], alias: [tic tac, pepermuntjes]}
+- {naam: "Pillen uit een doordrukstrip drukken", cat: verpakking, en: ["popping a pill out of a blister pack", "blister pack foil pop"], k: [impuls, kort], alias: [pillen, strip]}
+- {naam: "Cadeaupapier openscheuren", cat: verpakking, en: ["unwrapping a gift and tearing wrapping paper", "ripping gift wrap"], k: [ruis, kort], alias: [cadeau uitpakken, inpakpapier]}
+- {naam: "Kartonnen melkpak openen", cat: verpakking, en: ["opening a milk carton", "cardboard carton tab"], k: [ruis, kort], alias: [melkpak]}
+- {naam: "Schroefdop van een plastic fles (prik ontsnapt)", cat: verpakking, en: ["opening a plastic soda bottle with a hiss", "twisting off a bottle cap with fizz"], k: [ruis, kort], alias: [schroefdop, fles open]}
+- {naam: "Statiegeldflessen in een krat", cat: verpakking, en: ["glass bottles clinking in a crate", "bottles rattling in a crate"], k: [galm, impuls, hoog], alias: [krat, flessen]}
+
+# ---------------------------------------------------------------- vervoer / buiten
+- {naam: "Autodeur dichtslaan", cat: vervoer, en: ["a car door closing", "car door slam"], k: [impuls, laag, kort], alias: [autodeur]}
+- {naam: "Auto op slot met afstandsbediening (piep)", cat: vervoer, en: ["a car locking with a beep", "car alarm chirp"], k: [toon, impuls, kort], alias: [auto op slot]}
+- {naam: "Richtingaanwijzer (knipperlicht tikt)", cat: vervoer, en: ["a car turn signal clicking", "indicator ticking"], k: [ritmisch, impuls], alias: [knipperlicht, richtingaanwijzer]}
+- {naam: "Handrem aantrekken", cat: vervoer, en: ["pulling up a car handbrake", "handbrake ratchet"], k: [snelle_tikjes, kort], alias: [handrem]}
+- {naam: "Autogordel vastklikken", cat: vervoer, en: ["buckling a car seat belt", "seatbelt click"], k: [impuls, kort], alias: [gordel, autogordel]}
+- {naam: "Autogordel die terugschiet", cat: vervoer, en: ["a seat belt retracting", "seatbelt reeling back"], k: [ruis, snelle_tikjes, kort], alias: [gordel terug]}
+- {naam: "Ruitenwissers", cat: vervoer, en: ["windshield wipers swiping", "car wipers squeaking"], k: [ritmisch, ruis], alias: [ruitenwisser]}
+- {naam: "Raam van de auto omlaag", cat: vervoer, en: ["an electric car window rolling down", "power window motor"], k: [toon, continu], alias: [autoraam]}
+- {naam: "Tankslang / benzine tanken", cat: vervoer, en: ["filling a car with fuel at a gas station", "fuel nozzle pumping"], k: [ruis, continu], alias: [tanken]}
+- {naam: "Parkeermeter / muntautomaat", cat: vervoer, en: ["coins dropping into a parking meter", "coin machine"], k: [impuls, galm, meerdelig], alias: [parkeerautomaat]}
+- {naam: "OV-chipkaart incheckpiep", cat: vervoer, en: ["a card reader beep", "public transport card check-in beep"], k: [toon, kort, hoog], alias: [ov-chipkaart, inchecken]}
+- {naam: "Skateboard over de straat", cat: vervoer, en: ["a skateboard rolling on pavement", "skateboard wheels"], k: [ruis, continu, ritmisch], alias: [skateboard]}
+- {naam: "Steppen / step uitklappen", cat: vervoer, en: ["unfolding a kick scooter", "scooter latch click"], k: [impuls, galm], alias: [step]}
+- {naam: "Bladblazer", cat: buiten, en: ["a leaf blower", "leaf blower engine"], k: [ruis, toon, continu], alias: [bladblazer]}
+- {naam: "Tuinslang / sproeier", cat: buiten, en: ["a garden hose spraying water", "lawn sprinkler"], k: [ruis, continu], alias: [tuinslang, sproeier]}
+- {naam: "Hark over de grond", cat: buiten, en: ["raking leaves", "garden rake scraping"], k: [ruis, ritmisch], alias: [hark, harken]}
+- {naam: "Schep in zand / grind", cat: buiten, en: ["shoveling gravel", "spade digging into sand"], k: [ruis, impuls], alias: [schep, scheppen]}
+- {naam: "Hek / tuinpoort dichtvallen", cat: buiten, en: ["a metal garden gate clanging shut", "gate latch"], k: [impuls, galm], alias: [hek, tuinhek, poort]}
+- {naam: "Vlag die klappert in de wind", cat: buiten, en: ["a flag flapping in the wind", "fabric flapping"], k: [ruis, ritmisch], alias: [vlag]}
+- {naam: "Windgong / windorgel", cat: buiten, en: ["wind chimes ringing", "metal chimes tinkling"], k: [toon, galm, hoog], alias: [windgong]}
+- {naam: "Regen op een paraplu / dak", cat: buiten, en: ["rain falling on an umbrella", "raindrops on a roof"], k: [ruis, snelle_tikjes, continu], alias: [regen]}
+- {naam: "Sneeuw onder schoenen (krakend)", cat: buiten, en: ["footsteps crunching in snow", "walking on snow"], k: [ruis, ritmisch], alias: [sneeuw]}
+- {naam: "Schaatsen op ijs", cat: sport, en: ["ice skating blades scraping ice", "skates on ice"], k: [ruis, ritmisch], alias: [schaatsen]}
+- {naam: "Voetbal tegen de lat", cat: sport, en: ["a football hitting the crossbar", "ball hitting a metal goal post"], k: [impuls, galm, toon], alias: [voetbal, lat, paal]}
+- {naam: "Tent haringen in de grond slaan", cat: buiten, en: ["hammering tent pegs into the ground", "mallet on tent peg"], k: [impuls, ritmisch, galm], alias: [haringen, tentharing]}
+- {naam: "Barbecue / houtskool aansteken", cat: buiten, en: ["charcoal crackling on a barbecue", "barbecue sizzling"], k: [ruis, snelle_tikjes], alias: [barbecue, bbq]}
+
+# ---------------------------------------------------------------- dieren (zelden, maar toch)
+- {naam: "Kat die spint", cat: dier, en: ["a cat purring", "purring cat"], k: [toon, ritmisch, laag, continu], alias: [kat spinnen, poes]}
+- {naam: "Kat die water/melk drinkt (likken)", cat: dier, en: ["a cat lapping water", "pet drinking from a bowl"], k: [ritmisch, ruis], alias: [kat drinken]}
+- {naam: "Hond die schudt (oren flapperen)", cat: dier, en: ["a dog shaking off water with ears flapping", "dog collar jingling while shaking"], k: [ritmisch, galm, ruis], alias: [hond schudden]}
+- {naam: "Hamster in looprad", cat: dier, en: ["a hamster running in a squeaky wheel", "hamster wheel spinning"], k: [toon, ritmisch], alias: [hamster, looprad]}
+- {naam: "Brokjes in een voerbak schudden", cat: dier, en: ["pet food kibble poured into a bowl", "dry cat food rattling in a metal bowl"], k: [snelle_tikjes, galm], alias: [kattenvoer, hondenvoer, brokjes]}

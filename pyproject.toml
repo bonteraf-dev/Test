@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "geluidspeurder"
+version = "0.1.0"
+description = "Analyseert 'Het Geluid' (Qmusic) en doet een onderbouwde gok"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "librosa>=0.10",
+    "soundfile>=0.12",
+    "matplotlib>=3.7",
+    "pyyaml>=6",
+]
+
+[project.optional-dependencies]
+# AI-herkenning: vergelijkt het geluid met honderden beschrijvingen (CLAP-model)
+ai = ["torch>=2.1", "transformers>=4.40"]
+# Redeneren met Claude over de meetgegevens + spectrogram
+claude = ["anthropic>=0.80"]
+dev = ["pytest>=7"]
+
+[project.scripts]
+geluid = "geluidspeurder.cli:main"
+
+[tool.setuptools]
+packages = ["geluidspeurder"]
+
+[tool.setuptools.package-data]
+geluidspeurder = ["data/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

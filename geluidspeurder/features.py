@@ -81,6 +81,7 @@ class Kenmerken:
     sterft_uit: bool = True      # zakt het geluid binnen de opname >20 dB weg na de piek?
     naklank: list[dict] = field(default_factory=list)  # smalle tonen die na de klap blijven hangen
     naklank_partialen: str | None = None                # 'harmonisch' / 'inharmonisch' (metaal) / None
+    naklank_vorm: dict | None = None                    # welke vorm past bij de modusverhoudingen
     eigenschappen: dict[str, float] = field(default_factory=dict)
 
     def als_dict(self) -> dict:
@@ -166,7 +167,7 @@ def _naklank(y: np.ndarray, sr: int, env: np.ndarray, env_sr: float) -> list[dic
     sf = librosa.fft_frequencies(sr=sr, n_fft=4096)
     t = np.arange(S.shape[1]) * 1024 / sr
     uit = []
-    for i, prom in sorted(zip(pk, eig["prominences"]), key=lambda x: -x[1])[:8]:
+    for i, prom in sorted(zip(pk, eig["prominences"]), key=lambda x: -x[1])[:12]:
         hz = float(f[bereik][i])
         b = int(np.argmin(np.abs(sf - hz)))
         lijn = 20 * np.log10(S[b] + 1e-12)
@@ -178,6 +179,58 @@ def _naklank(y: np.ndarray, sr: int, env: np.ndarray, env_sr: float) -> list[dic
         t60 = round(-60 / helling, 2) if helling < -1 else None
         uit.append({"hz": round(hz), "prominentie_db": round(float(prom), 1), "t60_s": t60})
     return uit
+
+
+# Verhoudingen van de trillingsmodi van eenvoudige vormen (t.o.v. de laagste mode)
+VORMEN = {
+    "vrij staafje (los liggend/hangend: pen, pin, sleutel, gereedschap, buisje)": [1.0, 2.757, 5.404, 8.933],
+    "ring of lus (ring, beugel, armband, oog)": [1.0, 2.828, 5.423, 8.771],
+    "ingeklemde tong (veer-/stemvork-achtig, aan één kant vast)": [1.0, 6.267, 17.55],
+    "ronde plaat of deksel": [1.0, 1.73, 2.33, 3.91, 4.11],
+    "snaar of luchtkolom (harmonisch)": [1.0, 2.0, 3.0, 4.0, 5.0],
+}
+
+
+def vorm_uit_naklank(lijnen_hz: list[float], tolerantie: float = 0.045) -> dict | None:
+    """Welke eenvoudige vorm past bij de verhoudingen van de naklanktonen?
+
+    Probeert elke gemeten lijn als laagste mode en telt hoeveel voorspelde modi gevonden worden.
+    Er moeten minstens 3 modi kloppen. Kleine dubbele pieken (paren op ~1-4% afstand) wijzen op een
+    bijna symmetrisch voorwerp (rond staafje, ring) en worden samen geteld.
+    """
+    fs = sorted(set(round(f) for f in lijnen_hz if f))
+    if len(fs) < 3:
+        return None
+    per_vorm: dict[str, dict] = {}
+    for naam, verh in VORMEN.items():
+        for f0 in fs:
+            gevonden, fouten = [], []
+            for r in verh:
+                doel = f0 * r
+                dichtst = min(fs, key=lambda f: abs(f - doel))
+                fout = abs(dichtst - doel) / doel
+                if fout <= tolerantie:
+                    gevonden.append(dichtst)
+                    fouten.append(fout)
+            if len(gevonden) >= 3:
+                score = len(gevonden) - 10 * float(np.mean(fouten))
+                if naam not in per_vorm or score > per_vorm[naam]["score"]:
+                    per_vorm[naam] = {"vorm": naam, "grondtoon_hz": f0, "modi_hz": gevonden, "score": round(score, 2),
+                                      "gem_afwijking": round(float(np.mean(fouten)) * 100, 1)}
+    rang = sorted(per_vorm.values(), key=lambda v: -v["score"])
+    beste = dict(rang[0]) if rang else None
+    if beste:
+        # bijna gelijkwaardige alternatieven eerlijk vermelden
+        beste["alternatieven"] = [v["vorm"] for v in rang[1:] if beste["score"] - v["score"] <= 0.3]
+    if beste:
+        paren = sum(1 for a, b in zip(fs, fs[1:]) if 1.005 < b / a < 1.045)
+        beste["dubbele_pieken"] = paren
+        if any(v.startswith("vrij staafje") for v in [beste["vorm"], *beste["alternatieven"]]):
+            # lengte-schatting voor een rond staafje (staal/aluminium, c ~ 5000 m/s), diameter 2-5 mm
+            f1 = beste["grondtoon_hz"]
+            beste["lengte_cm"] = [round(100 * float(np.sqrt(22.37 * 5050 * (d / 4) / (2 * np.pi * f1))), 1)
+                                  for d in (0.002, 0.003, 0.005)]
+    return beste
 
 
 def _omhullende(y: np.ndarray, sr: int, ms: float = 1.0) -> tuple[np.ndarray, float]:
@@ -367,6 +420,7 @@ def meet(y: np.ndarray, sr: int, segmenten: list[Segment] | None = None) -> Kenm
         sterft_uit=sterft_uit,
         naklank=naklank,
         naklank_partialen=naklank_partialen,
+        naklank_vorm=vorm_uit_naklank([r["hz"] for r in naklank]),
     )
     km.eigenschappen = eigenschappen(km, segmenten)
     return km
@@ -489,6 +543,18 @@ def observaties(a: Analyse) -> list[str]:
         soort = (" (niet harmonisch -> metaal: veer, sleutel, blik, schaar, beslag)"
                  if k.naklank_partialen == "inharmonisch" else "")
         obs.append(f"Na de klap blijven smalle tonen hangen: {lijnen}{soort}.")
+        v = k.naklank_vorm
+        if v:
+            modi = " : ".join(f"{m / v['grondtoon_hz']:.2f}" for m in v["modi_hz"])
+            extra = ""
+            if v.get("lengte_cm"):
+                lo, mid, hi = v["lengte_cm"]
+                extra = f"; als rond metalen staafje van 2-5 mm dik: ca. {lo:.0f}-{hi:.0f} cm lang"
+            if v.get("dubbele_pieken"):
+                extra += "; dubbele pieken -> bijna rond/symmetrisch"
+            alt = f" of (bijna even goed) {' / '.join(v['alternatieven'])}" if v.get("alternatieven") else ""
+            obs.append(f"Toonverhoudingen {modi} passen bij: {v['vorm']}{alt} (grondtoon {_hz(v['grondtoon_hz'])}, "
+                       f"gem. afwijking {v['gem_afwijking']}%{extra}).")
     if e["galm"] > 0.5:
         obs.append(f"Klinkt na ({k.uitsterf_s:.2f} s tot -20 dB) -> hard, resonerend materiaal (metaal, glas, keramiek).")
     elif k.uitsterf_s < 0.08 and e["impuls"] > 0.5:

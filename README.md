@@ -16,7 +16,7 @@ opname ──► 1. opschonen ──► 2. signaalanalyse ──► 3. AI-vergel
    - **materiaal**: klinkt het na (metaal, glas, keramiek) of sterft het direct uit (hout, karton, stof)? Zijn de boventonen harmonisch (snaar, buis) of inharmonisch (metaal, bel)?
    - **ritme**: regelmatig (klok, stappen), snel ratelen (rits, freewheel) of **stuiteren**, dus tikken die steeds sneller en zachter komen (bal, dop, munt);
    - **verloop**: stijgt de toon (fles vullen, opwinden) of daalt hij (leeglopen, afremmen)?
-3. **AI-vergelijking** met [CLAP](https://huggingface.co/laion/larger_clap_general): een model dat audio en tekst in dezelfde "betekenisruimte" plaatst. Daarmee wordt de opname vergeleken met ruim 220 alledaagse geluiden uit `geluidspeurder/data/kandidaten.yaml`, zowel voor de hele opname als per deel.
+3. **AI-vergelijking** met [CLAP](https://huggingface.co/laion/larger_clap_general): een model dat audio en tekst in dezelfde "betekenisruimte" plaatst. Daarmee wordt de opname vergeleken met ruim 240 alledaagse geluiden uit `geluidspeurder/data/kandidaten.yaml`, zowel voor de hele opname als per deel.
 4. **Combineren**: de AI-score en de gemeten eigenschappen samen geven een kans per kandidaat. Antwoorden die op de radio **al fout geraden** zijn, worden uitgesloten of gestraft, ook als ze anders geschreven zijn (*"pingpong balletje"* ≈ *"Pingpongbal die stuitert"*). Hints over de categorie tellen ook mee.
 5. **Claude** (optioneel, `--claude`): krijgt de metingen, het spectrogram en de spelstatus, bedenkt nieuwe specifieke kandidaten die niet in de lijst staan (die laat het programma daarna weer door de AI scoren), en geeft een top 5 met redenering, een advies en suggesties voor geluiden om thuis na te bootsen.
 
@@ -85,6 +85,27 @@ Draai daarna `geluid analyse` opnieuw: de ranglijst en Claude houden er rekening
   geluid vergelijk radio.mp3 --start 1:02.4 --eind 1:05.1 rolmaat.m4a gordel.m4a rits.m4a
   ```
 
+- **Vergelijken met echte opnames uit de BBC-geluidsbibliotheek** (ruim 30.000 professionele opnames).
+  Per zoekterm worden opnames gedownload, elke klap/gebeurtenis wordt precies zo uitgeknipt als het
+  mysteriegeluid en vergeleken op AI-gelijkenis, tijdsverloop en spectrum:
+  ```bash
+  geluid online radio.wav "letterbox" "mouse trap" "screwdriver" --json resultaten.json
+  geluid online radio.wav --termen zoektermen.txt --per-term 5     # één Engelse zoekterm per regel
+  ```
+  (BBC RemArc-licentie: persoonlijk/educatief gebruik; bestanden blijven lokaal in `~/.cache/geluidspeurder`.)
+
+### Opnames van de Qmusic-site of -app
+Op de site zit het geluid tussen een jingle. `geluid analyse` herkent dat aan de digitale stilte rond het
+fragment en analyseert automatisch alleen het geluid (uitzetten met `--geen-autoknip`). De lijst met foute
+antwoorden kun je als CSV-export inlezen: `geluid fout --bestand foute-antwoorden.csv` (alleen de kolom
+"Antwoord" wordt gebruikt).
+
+### Natuurkundige vingerafdruk
+Na een klap op metaal blijven dunne tonen hangen. Hun onderlinge verhoudingen verraden de vorm van het
+trillende voorwerp: een los staafje (1 : 2,76 : 5,40 : 8,93), een ring (1 : 2,83 : 5,42), een aan één kant
+ingeklemde tong (1 : 6,27 : 17,55), een plaat of een snaar (1 : 2 : 3). De tool meet dit en schat bij een
+staafje ook de lengte. Liggen twee vormen dicht bij elkaar, dan worden beide genoemd.
+
 ### 5. Kandidatenlijst uitbreiden
 ```bash
 geluid kandidaten --zoek rits
@@ -116,5 +137,6 @@ De tests gebruiken synthetische geluiden met bekende eigenschappen (stuiterbal, 
 | `geluidspeurder/rangschik.py` | bewijs combineren tot kansen |
 | `geluidspeurder/status.py` | foute gokken, hints, slimme naamvergelijking |
 | `geluidspeurder/claude_brein.py` | Claude-brainstorm en eindoordeel |
+| `geluidspeurder/online.py` | vergelijken met echte opnames (BBC Sound Effects) |
 | `geluidspeurder/pipeline.py` | alles aan elkaar geknoopt |
-| `geluidspeurder/data/kandidaten.yaml` | ruim 220 alledaagse geluiden |
+| `geluidspeurder/data/kandidaten.yaml` | ruim 240 alledaagse geluiden |

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import subprocess
 import sys
@@ -172,6 +173,47 @@ def cmd_idee(a):
     return 0
 
 
+def cmd_online(a):
+    from . import audio as audio_mod
+    from .online import vergelijk_online
+
+    sr = audio_mod.STANDAARD_SR
+    y = audio_mod.bereid_voor(a.mysterie, start=a.start, eind=a.eind, sr=sr)
+    if a.start is None and a.eind is None:
+        from .pipeline import _knip_jingle_weg
+
+        y = _knip_jingle_weg(y, sr, [], lambda m: print(m, file=sys.stderr))
+    clap = None
+    if not a.geen_ai:
+        from . import clap as clap_mod
+
+        ok, fout = clap_mod.beschikbaar()
+        if ok:
+            try:
+                clap = clap_mod.ClapScorer()
+            except Exception as e:
+                print(f"! AI-model niet beschikbaar ({e})", file=sys.stderr)
+        else:
+            print(f"! {fout}", file=sys.stderr)
+    termen = list(a.zoek)
+    if a.termen:
+        termen += [t.strip() for t in Path(a.termen).read_text(encoding="utf-8").splitlines()
+                   if t.strip() and not t.startswith("#")]
+    res = vergelijk_online(y, sr, termen, per_term=a.per_term, clap=clap, log=lambda m: print(m, file=sys.stderr))
+    print(f"\nBeste overeenkomsten met echte opnames (BBC Sound Effects), van {len(res)} vergeleken:\n")
+    print(f"  {'totaal':>6}  {'AI':>5}  {'verloop':>7}  {'spectr.':>7}  zoekterm / beschrijving")
+    for m in res[: a.top]:
+        ai = f"{m.ai:5.2f}" if m.ai is not None else "    -"
+        print(f"  {m.totaal * 100:5.1f}%  {ai}  {m.verloop:7.2f}  {m.spectrum:7.2f}  [{m.referentie.zoekterm}] "
+              f"{m.referentie.beschrijving[:70]}  (bbc {m.referentie.id} @ {m.tijd:.1f}s)")
+    if a.json:
+        rijen = [{"totaal": m.totaal, "ai": m.ai, "verloop": m.verloop, "spectrum": m.spectrum, "tijd": m.tijd,
+                  "id": m.referentie.id, "zoekterm": m.referentie.zoekterm, "beschrijving": m.referentie.beschrijving,
+                  "pad": str(m.referentie.pad)} for m in res]
+        Path(a.json).write_text(json.dumps(rijen, ensure_ascii=False, indent=1), encoding="utf-8")
+    return 0
+
+
 def cmd_opnemen(a):
     if not shutil.which("ffmpeg"):
         print("ffmpeg is nodig om op te nemen.", file=sys.stderr)
@@ -258,6 +300,18 @@ def maak_parser() -> argparse.ArgumentParser:
     s.add_argument("--start", type=_tijd)
     s.add_argument("--eind", type=_tijd)
     s.set_defaults(func=cmd_idee)
+
+    s = sub.add_parser("online", help="vergelijk met echte opnames uit de BBC-geluidsbibliotheek")
+    s.add_argument("mysterie")
+    s.add_argument("zoek", nargs="*", help='Engelse zoektermen, bijv. "mousetrap" "letterbox"')
+    s.add_argument("--termen", help="tekstbestand met één zoekterm per regel")
+    s.add_argument("--per-term", type=int, default=5, help="aantal opnames per zoekterm (standaard 5)")
+    s.add_argument("--top", type=int, default=25)
+    s.add_argument("--json", help="alle resultaten opslaan als JSON")
+    s.add_argument("--start", type=_tijd)
+    s.add_argument("--eind", type=_tijd)
+    s.add_argument("--geen-ai", action="store_true")
+    s.set_defaults(func=cmd_online)
 
     s = sub.add_parser("opnemen", help="neem een (radio)stream op met ffmpeg")
     s.add_argument("url", help="stream-URL van de radiozender")

@@ -80,3 +80,16 @@ def test_trim_met_ruisvloer():
     y = np.concatenate([np.zeros(48000), synth.klok()[: 48000 // 2], np.zeros(48000)])
     y = y + 0.002 * np.random.default_rng(0).standard_normal(len(y))
     assert len(trim_stilte(y.astype(np.float32))) < 0.7 * len(y)
+
+
+def test_vorm_uit_naklank():
+    from geluidspeurder.features import vorm_uit_naklank
+
+    staaf = vorm_uit_naklank([1257, 1297, 3468, 3553, 6571, 10769])
+    vormen = [staaf["vorm"], *staaf["alternatieven"]]
+    assert any(v.startswith("vrij staafje") for v in vormen) and any(v.startswith("ring") for v in vormen)
+    assert staaf["grondtoon_hz"] == 1257
+    assert staaf["dubbele_pieken"] >= 1 and len(staaf["lengte_cm"]) == 3
+    assert vorm_uit_naklank([220, 440, 660, 880])["vorm"].startswith("snaar")
+    assert vorm_uit_naklank([500, 3134, 8775])["vorm"].startswith("ingeklemde")
+    assert vorm_uit_naklank([1000, 1500]) is None

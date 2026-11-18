@@ -114,3 +114,45 @@ def test_fout_uit_geplakte_lijst(tmp_path):
     status = tmp_path / "s.yaml"
     assert main(["fout", "--bestand", str(lijst), "--status", str(status)]) == 0
     assert len(Status.laad(status).fout_geraden) == 5
+
+
+def _klap_met_zachte_metaalklank():
+    t = np.arange(int(synth.SR * 1.1)) / synth.SR
+    klap = synth._tik(helder=1500, duur=0.08, amp=1.0)
+    ring = 0.01 * sum(np.sin(2 * np.pi * f * t) * np.exp(-t / 0.6) for f in (1260, 1822, 3469))  # -40 dB
+    y = ring.copy()
+    y[: len(klap)] += klap
+    return y
+
+
+def test_zachte_metaalnaklank_telt_als_galm():
+    from geluidspeurder.audio import segmenteer
+    from geluidspeurder.features import analyseer
+
+    y = _klap_met_zachte_metaalklank().astype(np.float32)
+    a = analyseer(y, synth.SR, segmenteer(y, synth.SR))
+    assert a.geheel.eigenschappen["galm"] > 0.6
+    assert {round(r["hz"], -2) for r in a.geheel.naklank} >= {1300.0, 1800.0, 3500.0}
+
+
+def test_autoknip_haalt_geluid_tussen_jingle(tmp_path):
+    stil = np.zeros(int(0.6 * synth.SR))
+    jingle = 0.5 * synth.brom(3.0)
+    geluid = _klap_met_zachte_metaalklank()
+    y = np.concatenate([jingle, stil, geluid, stil, jingle]).astype(np.float32)
+    pad = tmp_path / "met_jingle.wav"
+    sf.write(pad, y, synth.SR)
+    res = analyseer_bestand(pad, laad_kandidaten(), Status(), gebruik_ai=False, log=lambda m: None)
+    assert any("Automatisch geknipt" in w for w in res.waarschuwingen)
+    assert 0.9 < res.analyse.duur < 1.3
+    zonder = analyseer_bestand(pad, laad_kandidaten(), Status(), gebruik_ai=False, autoknip=False, log=lambda m: None)
+    assert zonder.analyse.duur > 5
+
+
+def test_fout_uit_csv_export():
+    from geluidspeurder.cli import lees_gokken
+
+    csv_tekst = ("﻿Datum;Tijd;Antwoord;Naam;Woonplaats\n"
+                 "2026-11-18;12:30;Het snijden van papier met een snijmachine;An;Gent\n"
+                 "2026-11-18;11:30;Een autodeur toeslaan;Bo;Brugge\n")
+    assert lees_gokken(csv_tekst) == ["Het snijden van papier met een snijmachine", "Een autodeur toeslaan"]

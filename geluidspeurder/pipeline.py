@@ -62,6 +62,30 @@ def _per_segment(analyse: Analyse, y: np.ndarray, kandidaten: list[Kandidaat], s
     return uit
 
 
+def _lijkt_muziek(stuk: np.ndarray, sr: int) -> bool:
+    from .features import meet
+
+    k = meet(stuk, sr)
+    return k.duur >= 2.0 and (k.eigenschappen["toon"] >= 0.6 or k.harmonisch_aandeel >= 0.6)
+
+
+def _knip_jingle_weg(y: np.ndarray, sr: int, waarschuwingen: list[str], log) -> np.ndarray:
+    """Herken een strak geknipt fragment tussen jingle/muziek (gescheiden door digitale stilte)."""
+    delen = audio_mod.digitale_stilte_delen(y, sr)
+    if len(delen) < 2:
+        return y
+    muziek = [_lijkt_muziek(d.knip(y, sr), sr) for d in delen]
+    kern = [d for d, m in zip(delen, muziek) if not m]
+    if len(kern) == 1 and any(muziek):
+        d = kern[0]
+        rest = ", ".join(f"{x.start:.2f}-{x.eind:.2f}s" for x, m in zip(delen, muziek) if m)
+        waarschuwingen.append(f"Automatisch geknipt: alleen {d.start:.2f}-{d.eind:.2f}s geanalyseerd (omringd door "
+                              f"digitale stilte); {rest} leek jingle/muziek. Uitzetten met --geen-autoknip.")
+        log(f"• Jingle herkend, geluid zit op {d.start:.2f}-{d.eind:.2f}s")
+        return audio_mod.normaliseer(d.knip(y, sr))  # al strak geknipt: zachte naklank niet wegtrimmen
+    return y
+
+
 def analyseer_bestand(
     pad: str | Path,
     kandidaten: list[Kandidaat],
@@ -71,6 +95,7 @@ def analyseer_bestand(
     ontruisen: bool = False,
     gebruik_ai: bool = True,
     gebruik_claude: bool = False,
+    autoknip: bool = True,
     uitmap: str | Path | None = None,
     log: Callable[[str], None] = print,
 ) -> Resultaat:
@@ -80,6 +105,8 @@ def analyseer_bestand(
 
     log("• Audio laden en opschonen ...")
     y = audio_mod.bereid_voor(pad, start=start, eind=eind, ontruisen=ontruisen, sr=sr)
+    if autoknip and start is None and eind is None:
+        y = _knip_jingle_weg(y, sr, waarschuwingen, log)
     if len(y) / sr > 30:
         waarschuwingen.append(f"Opname is {len(y) / sr:.0f} s lang. Knip met --start/--eind alleen het geluid eruit "
                               "(zonder presentator/muziek) voor een veel betere analyse.")

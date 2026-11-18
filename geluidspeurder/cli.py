@@ -33,6 +33,7 @@ def cmd_analyse(a: argparse.Namespace) -> int:
     uitmap = Path(a.uit) if a.uit else Path("resultaten") / Path(a.bestand).stem
     res = analyseer_bestand(a.bestand, kandidaten, status, start=a.start, eind=a.eind, ontruisen=a.ontruis,
                             gebruik_ai=not a.geen_ai, gebruik_claude=a.claude, uitmap=uitmap,
+                            autoknip=not a.geen_autoknip,
                             log=(lambda _m: None) if a.stil else (lambda m: print(m, file=sys.stderr)))
     tekst = res.tekst(top=a.top)
     print(tekst)
@@ -59,7 +60,17 @@ def lees_gokken(tekst: str) -> list[str]:
     Nummering, opsommingstekens, tijdstippen en namen vooraan ('12. ', '- ', '14:30 ', 'Jan: ') worden
     weggehaald, zodat je de lijst van de website of app zo kunt plakken.
     """
+    import csv
+    import io
     import re
+
+    tekst = tekst.lstrip("\ufeff")
+    eerste = tekst.splitlines()[0] if tekst.strip() else ""
+    if "antwoord" in eerste.lower():  # CSV-export met een kolom 'Antwoord' (namen e.d. worden genegeerd)
+        scheiding = max(";,\t", key=eerste.count)
+        lezer = csv.DictReader(io.StringIO(tekst), delimiter=scheiding)
+        kolom = next(k for k in lezer.fieldnames or [] if k and "antwoord" in k.lower())
+        tekst = "\n".join((rij.get(kolom) or "").replace(";", ",") for rij in lezer)
 
     gokken: list[str] = []
     for regel in re.split(r"[\n;]+", tekst):
@@ -195,6 +206,8 @@ def maak_parser() -> argparse.ArgumentParser:
     s.add_argument("--kandidaten", nargs="*", default=[], help="extra YAML-bestand(en) met eigen kandidaten")
     s.add_argument("--geen-ai", action="store_true", help="geen CLAP-model gebruiken (alleen signaalanalyse)")
     s.add_argument("--claude", action="store_true", help="laat Claude meedenken (API-sleutel nodig)")
+    s.add_argument("--geen-autoknip", action="store_true",
+                   help="niet automatisch het fragment tussen de jingle eruit halen")
     s.add_argument("--uit", help="map voor resultaten (standaard resultaten/<bestandsnaam>)")
     s.add_argument("--top", type=int, default=12, help="aantal kandidaten in het rapport")
     s.add_argument("--stil", action="store_true", help="geen voortgangsmeldingen")

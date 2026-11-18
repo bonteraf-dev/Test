@@ -90,3 +90,18 @@ def test_status_opslaan_en_laden(tmp_path):
     terug = Status.laad(pad)
     assert terug.fout_geraden == ["een rits"] and terug.hints == ["keuken"]
     assert Status.laad(tmp_path / "bestaat_niet.yaml").fout_geraden == []
+
+
+@pytest.mark.parametrize("gok,naam,uit", [
+    ("Met een perforator een blad papier perforeren", "Perforator", True),
+    ("Dichtdoen van een nietjesmachine", "Nietmachine", True),
+    ("Het sluiten van de deur van een microgolfoven", "Magnetrondeur open- en dichtdoen", True),
+    ("het verspringen van de kleine wijzer van een analoge klok wanneer het uur verandert", "Klok die tikt", False),
+    ("De deur van een wasmachine die openspringt nadat je daarvoor op een knop hebt geduwd",
+     "Wasmachine centrifugeren", False),
+    ("Het inschieten van het slot als je de klink van een deur terug omhoog laat gaan",
+     "Sleutel in het slot omdraaien", False),
+])
+def test_lange_beschrijvende_gokken(kandidaten, gok, naam, uit):
+    k = next(k for k in kandidaten if k.naam == naam)
+    assert (gelijkenis(gok, [k.naam, *k.alias]) >= 0.85) == uit

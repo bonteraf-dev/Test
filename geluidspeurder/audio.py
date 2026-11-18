@@ -80,6 +80,8 @@ def stilte_drempel_db(y: np.ndarray, top_db: float = 35, frame: int = 512, hop: 
     rms = librosa.feature.rms(y=y, frame_length=frame, hop_length=hop)[0]
     db = 20 * np.log10(rms + 1e-10)
     piek, vloer = float(db.max()), float(np.percentile(db, 10))
+    if vloer < -90:  # digitale stilte (strak geknipt fragment): geen ruisvloer, dus ook zachte naklank meenemen
+        return 60.0
     if piek - vloer > 18:  # er is echt een stiller stuk (ruisvloer) aanwezig
         return float(min(top_db, max(12.0, piek - (vloer + 6.0))))
     return float(top_db)
@@ -94,6 +96,37 @@ def trim_stilte(y: np.ndarray, top_db: float = 35) -> np.ndarray:
         return y
     marge = 2048  # ~40 ms marge zodat de aanzet heel blijft
     return y[max(0, a - marge) : min(len(y), b + marge)]
+
+
+def digitale_stilte_delen(y: np.ndarray, sr: int, min_stilte: float = 0.04) -> list[Segment]:
+    """Delen van de opname die gescheiden worden door digitale stilte (exact of bijna nul).
+
+    Qmusic knipt Het Geluid strak tussen de jingle; op die 'gaten' kun je het fragment terugvinden.
+    """
+    piek = float(np.max(np.abs(y))) if y.size else 0.0
+    if piek == 0:
+        return []
+    stil = np.abs(y) < piek * 10 ** (-80 / 20)
+    n_min = int(min_stilte * sr)
+    delen, start, i, n = [], None, 0, len(y)
+    while i < n:
+        if not stil[i]:
+            if start is None:
+                start = i
+            i += 1
+            continue
+        j = i
+        while j < n and stil[j]:
+            j += 1
+        if j - i >= n_min and start is not None:
+            delen.append(Segment(round(start / sr, 3), round(i / sr, 3)))
+            start = None
+        elif start is None and j - i < n_min:
+            start = i
+        i = j
+    if start is not None:
+        delen.append(Segment(round(start / sr, 3), round(n / sr, 3)))
+    return [d for d in delen if d.duur >= 0.05]
 
 
 def ontruis(y: np.ndarray, sr: int, sterkte: float = 1.5) -> np.ndarray:

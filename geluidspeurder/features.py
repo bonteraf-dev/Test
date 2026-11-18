@@ -79,6 +79,8 @@ class Kenmerken:
     ratel_hz: float | None       # dominante 'ratelfrequentie' van de omhullende (8-80 Hz)
     ratel_sterkte: float         # hoe uitgesproken dat ratelen is (periodiciteit 0..1)
     sterft_uit: bool = True      # zakt het geluid binnen de opname >20 dB weg na de piek?
+    naklank: list[dict] = field(default_factory=list)  # smalle tonen die na de klap blijven hangen
+    naklank_partialen: str | None = None                # 'harmonisch' / 'inharmonisch' (metaal) / None
     eigenschappen: dict[str, float] = field(default_factory=dict)
 
     def als_dict(self) -> dict:
@@ -137,6 +139,45 @@ def _ratel(env: np.ndarray, env_sr: float) -> tuple[float | None, float]:
     # alleen diepe modulatie telt (tikjes met stiltes ertussen), geen rimpel van een bromtoon
     diepte = min(1.0, float(np.std(e)) / 0.6)
     return float(env_sr / i), float(max(0.0, ac[i]) * diepte)
+
+
+def _naklank(y: np.ndarray, sr: int, env: np.ndarray, env_sr: float) -> list[dict]:
+    """Smalle tonen die na het luidste moment blijven doorklinken (metaal/glas), ook als ze zacht zijn.
+
+    Een klap op metaal laat dunne, lang aanhoudende lijnen in het spectrum achter. Die kunnen 40 dB
+    zachter zijn dan de klap zelf, maar verraden het materiaal.
+    """
+    import librosa
+    from scipy.signal import find_peaks, welch
+
+    start = int((np.argmax(env) / env_sr + 0.12) * sr)
+    staart = y[start:]
+    if len(staart) < 0.25 * sr or np.max(np.abs(staart)) == 0:
+        return []
+    nper = int(min(8192, 2 ** int(np.log2(len(staart)))))
+    f, p = welch(staart, fs=sr, nperseg=nper, noverlap=nper // 2)
+    db = 10 * np.log10(p + 1e-20)
+    bereik = (f > 300) & (f < min(12000, sr / 2 - 200))
+    pk, eig = find_peaks(db[bereik], prominence=15, distance=max(2, int(25 / (f[1] - f[0]))))
+    if not len(pk):
+        return []
+    # houdt de lijn stand in de tijd? (een echte resonantie, geen toevallige piek)
+    S = np.abs(librosa.stft(staart, n_fft=4096, hop_length=1024))
+    sf = librosa.fft_frequencies(sr=sr, n_fft=4096)
+    t = np.arange(S.shape[1]) * 1024 / sr
+    uit = []
+    for i, prom in sorted(zip(pk, eig["prominences"]), key=lambda x: -x[1])[:8]:
+        hz = float(f[bereik][i])
+        b = int(np.argmin(np.abs(sf - hz)))
+        lijn = 20 * np.log10(S[b] + 1e-12)
+        buren = 20 * np.log10(np.median(S[max(0, b - 12) : b + 13], axis=0) + 1e-12)
+        aanwezig = float(np.mean(lijn - buren > 6))
+        if aanwezig < 0.6:
+            continue
+        helling = float(np.polyfit(t, lijn, 1)[0]) if len(t) >= 3 else 0.0
+        t60 = round(-60 / helling, 2) if helling < -1 else None
+        uit.append({"hz": round(hz), "prominentie_db": round(float(prom), 1), "t60_s": t60})
+    return uit
 
 
 def _omhullende(y: np.ndarray, sr: int, ms: float = 1.0) -> tuple[np.ndarray, float]:
@@ -225,6 +266,9 @@ def meet(y: np.ndarray, sr: int, segmenten: list[Segment] | None = None) -> Kenm
     volgorde = np.argsort(res_p)[::-1][:6]
     resonanties = [{"hz": _rond(res_f[i], 0), "prominentie_db": _rond(res_p[i], 1)} for i in volgorde]
     partialen = _partialen([r["hz"] for r in resonanties[:5]], tolerantie_hz=1.5 * float(wf[1] - wf[0]))
+
+    naklank = _naklank(y, sr, env, env_sr)
+    naklank_partialen = _partialen([r["hz"] for r in naklank[:5]], tolerantie_hz=12.0)
 
     # --- toonhoogte (pyin) ---
     y16 = librosa.resample(librosa.istft(Hc, hop_length=hop, length=len(y)), orig_sr=sr, target_sr=16000)
@@ -321,6 +365,8 @@ def meet(y: np.ndarray, sr: int, segmenten: list[Segment] | None = None) -> Kenm
         ratel_hz=ratel_hz,
         ratel_sterkte=float(ratel_sterkte),
         sterft_uit=sterft_uit,
+        naklank=naklank,
+        naklank_partialen=naklank_partialen,
     )
     km.eigenschappen = eigenschappen(km, segmenten)
     return km
@@ -335,10 +381,13 @@ def eigenschappen(k: Kenmerken, segmenten: list[Segment] | None = None,
     e["ruis"] = _sig(k.vlakheid, 0.10, 0.035) * (1 - 0.6 * _sig(k.harmonisch_aandeel, 0.8, 0.05))
     e["toon"] = max(
         _sig(k.harmonisch_aandeel, 0.7, 0.06) * (1 - _sig(k.vlakheid, 0.12, 0.04)),
-        _sig(k.stemhebbend, 0.45, 0.1) * (1 - _sig(k.vlakheid, 0.15, 0.04)),
+        _sig(k.stemhebbend, 0.45, 0.1) * (1 - _sig(k.vlakheid, 0.15, 0.04)) * _sig(k.harmonisch_aandeel, 0.3, 0.08),
     )
     e["galm"] = (_sig(k.uitsterf_s, 0.25, 0.08) * _sig(max_prom, 14, 3) * (1 - 0.5 * e["ruis"])
                  * (1.0 if k.sterft_uit else 0.25))
+    if k.naklank and k.sterft_uit:  # zachte metaalachtige naklank na een klap telt ook als galm
+        max_nk = max(r["prominentie_db"] for r in k.naklank)
+        e["galm"] = max(e["galm"], 0.9 * _sig(len(k.naklank), 1.5, 0.5) * _sig(max_nk, 20, 4))
     e["impuls"] = _sig(k.piekerigheid, 0.30, 0.07) * _sig(-k.aanzet_ms, -25, 8)
     e["continu"] = _sig(-k.omhullende_std_db, -6, 1.5) * _sig(k.duur, 1.0, 0.3) * (1 - _sig(k.piekerigheid, 0.25, 0.05))
     e["snelle_tikjes"] = max(
@@ -435,6 +484,11 @@ def observaties(a: Analyse) -> list[str]:
         elif k.partialen == "harmonisch":
             extra = " Boventonen zijn veelvouden -> snaar, blaasgeluid, stem, motor of buis."
         obs.append(f"Opvallende resonanties: {top}.{extra}")
+    if k.naklank:
+        lijnen = ", ".join(_hz(r["hz"]) for r in k.naklank[:5])
+        soort = (" (niet harmonisch -> metaal: veer, sleutel, blik, schaar, beslag)"
+                 if k.naklank_partialen == "inharmonisch" else "")
+        obs.append(f"Na de klap blijven smalle tonen hangen: {lijnen}{soort}.")
     if e["galm"] > 0.5:
         obs.append(f"Klinkt na ({k.uitsterf_s:.2f} s tot -20 dB) -> hard, resonerend materiaal (metaal, glas, keramiek).")
     elif k.uitsterf_s < 0.08 and e["impuls"] > 0.5:

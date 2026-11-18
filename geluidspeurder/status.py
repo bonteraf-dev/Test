@@ -19,6 +19,9 @@ STOPWOORDEN = {
     "een", "de", "het", "van", "die", "dat", "op", "in", "met", "aan", "uit", "je", "wordt", "worden", "er", "iets",
     "geluid", "en", "of", "te", "om", "bij", "naar", "voor", "over", "door", "is", "zijn", "wat", "hij", "zij", "ze",
     "men", "iemand", "the", "a", "an", "of", "to",
+    # vulwoorden uit lange, beschrijvende gokken ('... zodat je ... nadat je ...')
+    "naar", "laten", "zodat", "wanneer", "nadat", "als", "hebt", "heeft", "waardoor", "daarvoor", "terug", "oude",
+    "oud", "ouderwetse", "grote", "kleine", "klein", "groot", "blad", "dan", "tot", "zich", "jouw", "uw", "mijn",
 }
 
 
@@ -76,7 +79,7 @@ def _woord_match(a: str, b: str) -> float:
 
 
 def gelijkenis(gok: str, namen: list[str]) -> float:
-    """0..1: hoe sterk lijkt een gok op een kandidaat (naam + aliassen)?
+    """0..1: hoe sterk lijkt een gok op een kandidaat? `namen` = [hoofdnaam, *aliassen].
 
     Woordgewijs (met grove stam en samenstellingen), plus een vergelijking zonder spaties
     voor Nederlandse samenstellingen ('pingpong balletje' ~ 'pingpongbal').
@@ -86,7 +89,7 @@ def gelijkenis(gok: str, namen: list[str]) -> float:
         return 0.0
     g_woorden = [_stam(w) for w in g.split()]
     beste = 0.0
-    for naam in namen:
+    for i_naam, naam in enumerate(namen):
         n = normaliseer(naam)
         if not n:
             continue
@@ -95,10 +98,15 @@ def gelijkenis(gok: str, namen: list[str]) -> float:
         n_woorden = [_stam(w) for w in n.split()]
         per_gok = float(np.mean([max(_woord_match(a, b) for b in n_woorden) for a in g_woorden]))
         per_naam = float(np.mean([max(_woord_match(b, a) for a in g_woorden) for b in n_woorden]))
-        # hoeveel van de gok zit in de kandidaat, gewogen met hoeveel van de kandidaat de gok dekt
-        score = per_gok * (0.6 + 0.4 * per_naam)
+        # hoeveel van de gok zit in de kandidaat (en omgekeerd: hoeveel van de kandidaat zit in de gok)
+        score = max(per_gok * (0.6 + 0.4 * per_naam), per_naam * (0.6 + 0.4 * per_gok))
         # een specifieke gok (2+ woorden) die volledig in de kandidaat zit = dezelfde gok
         if len(g_woorden) >= 2 and per_gok >= 0.95:
+            score = max(score, 0.9)
+        # een korte kandidaat die volledig in een (lange, uitleggende) gok zit = ook dezelfde gok
+        # ('Perforator' ~ 'Met een perforator een blad papier perforeren')
+        # (alleen voor de hoofdnaam, of aliassen van 2+ woorden: 'klok' of 'slot' zit te vaak toevallig in een gok)
+        if len(n_woorden) <= 3 and per_naam >= 0.85 and (i_naam == 0 or len(n_woorden) >= 2):
             score = max(score, 0.9)
         g2, n2 = g.replace(" ", ""), n.replace(" ", "")
         if min(len(g2), len(n2)) >= 10:

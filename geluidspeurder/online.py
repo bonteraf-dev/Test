@@ -44,6 +44,8 @@ class Match:
     ai: float | None
     verloop: float
     spectrum: float
+    naklank: int = 0          # aantal blijvende smalle metaaltonen na de klap in het referentie-venster
+    naklank_db: float = 0.0   # sterkste prominentie daarvan
 
 
 def zoek_bbc(zoekterm: str, aantal: int = 6, max_duur_s: float = 120) -> list[Referentie]:
@@ -159,6 +161,14 @@ class Vergelijker:
             m = Match(ref, round(start, 2), totaal, ai, verloop, spectrum)
             if beste is None or m.totaal > beste.totaal:
                 beste = m
+        if beste is not None:  # vingerafdruk: blijft er na de klap een dunne metaaltoon hangen?
+            from .features import _naklank
+
+            stuk = self.venster(y, int((beste.tijd + self.piek_s) * self.sr))
+            env = _omhullende_db(stuk, self.sr)
+            lijnen = _naklank(stuk, self.sr, 10 ** (env / 20), 200.0)
+            beste.naklank = len(lijnen)
+            beste.naklank_db = max((r["prominentie_db"] for r in lijnen), default=0.0)
         return beste
 
 

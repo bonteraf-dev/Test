@@ -201,13 +201,15 @@ def cmd_online(a):
                    if t.strip() and not t.startswith("#")]
     res = vergelijk_online(y, sr, termen, per_term=a.per_term, clap=clap, log=lambda m: print(m, file=sys.stderr))
     print(f"\nBeste overeenkomsten met echte opnames (BBC Sound Effects), van {len(res)} vergeleken:\n")
-    print(f"  {'totaal':>6}  {'AI':>5}  {'verloop':>7}  {'spectr.':>7}  zoekterm / beschrijving")
+    print(f"  {'totaal':>6}  {'AI':>5}  {'verloop':>7}  {'spectr.':>7}  {'metaal':>6}  zoekterm / beschrijving")
     for m in res[: a.top]:
         ai = f"{m.ai:5.2f}" if m.ai is not None else "    -"
-        print(f"  {m.totaal * 100:5.1f}%  {ai}  {m.verloop:7.2f}  {m.spectrum:7.2f}  [{m.referentie.zoekterm}] "
+        metaal = f"{m.naklank}x" if m.naklank else "  -"
+        print(f"  {m.totaal * 100:5.1f}%  {ai}  {m.verloop:7.2f}  {m.spectrum:7.2f}  {metaal:>6}  [{m.referentie.zoekterm}] "
               f"{m.referentie.beschrijving[:70]}  (bbc {m.referentie.id} @ {m.tijd:.1f}s)")
     if a.json:
         rijen = [{"totaal": m.totaal, "ai": m.ai, "verloop": m.verloop, "spectrum": m.spectrum, "tijd": m.tijd,
+                  "naklank": m.naklank, "naklank_db": m.naklank_db,
                   "id": m.referentie.id, "zoekterm": m.referentie.zoekterm, "beschrijving": m.referentie.beschrijving,
                   "pad": str(m.referentie.pad)} for m in res]
         Path(a.json).write_text(json.dumps(rijen, ensure_ascii=False, indent=1), encoding="utf-8")

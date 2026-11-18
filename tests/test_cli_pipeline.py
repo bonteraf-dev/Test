@@ -101,3 +101,16 @@ def test_pipeline_met_nep_claude(wav, tmp_path, monkeypatch):
     assert eerste["messages"][0]["content"][0]["type"] == "image"  # spectrogram meegestuurd
     assert "pingpongbal" in eerste["messages"][0]["content"][1]["text"]
     assert "CLAUDE - EINDOORDEEL" in res.tekst()
+
+
+def test_fout_uit_geplakte_lijst(tmp_path):
+    from geluidspeurder.cli import lees_gokken
+
+    tekst = "1. Een rits\n2) kurk uit een fles\n- Fietspomp\n14:30 - Een blikje openen\nJan (Gent): de wc doortrekken\n\nKurk uit een fles\n"
+    assert lees_gokken(tekst) == ["Een rits", "kurk uit een fles", "Fietspomp", "Een blikje openen",
+                                  "de wc doortrekken"]
+    lijst = tmp_path / "fout.txt"
+    lijst.write_text(tekst, encoding="utf-8")
+    status = tmp_path / "s.yaml"
+    assert main(["fout", "--bestand", str(lijst), "--status", str(status)]) == 0
+    assert len(Status.laad(status).fout_geraden) == 5

@@ -66,6 +66,7 @@ Elke foute gok op de radio sluit iets uit. Houd het bij in `status.yaml` (je kun
 
 ```bash
 geluid fout "een rits" "fietspomp" "kurk uit een fles"
+geluid fout --bestand fout.txt              # hele lijst van de site/app plakken, één per regel
 geluid richting "iets met metaal"           # "je zit in de goede richting"
 geluid hint "het komt uit de keuken"
 geluid categorie --niet dier vervoer --wel keuken

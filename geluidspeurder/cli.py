@@ -53,8 +53,34 @@ def _status_wijzig(a: argparse.Namespace, veld: str, waarden: list[str]) -> int:
     return 0
 
 
+def lees_gokken(tekst: str) -> list[str]:
+    """Haal gokken uit geplakte tekst: één per regel (of gescheiden door ';').
+
+    Nummering, opsommingstekens, tijdstippen en namen vooraan ('12. ', '- ', '14:30 ', 'Jan: ') worden
+    weggehaald, zodat je de lijst van de website of app zo kunt plakken.
+    """
+    import re
+
+    gokken: list[str] = []
+    for regel in re.split(r"[\n;]+", tekst):
+        r = regel.strip()
+        r = re.sub(r"^\s*(\d+[.)]|[-*\u2022\u2013])\s*", "", r)        # 12.  /  -  /  •
+        r = re.sub(r"^\s*\d{1,2}[:.h]\d{2}\s*[-\u2013:]?\s*", "", r)  # 14:30 -
+        r = re.sub(r"^[A-Z][\w\- ]{0,25}(\([^)]*\))?\s*:\s+", "", r)  # Naam (Gent):
+        r = r.strip(" \"'\u201c\u201d.")
+        if len(r) >= 3 and r.lower() not in {g.lower() for g in gokken}:
+            gokken.append(r)
+    return gokken
+
+
 def cmd_fout(a):
-    return _status_wijzig(a, "fout_geraden", a.gok)
+    gokken = list(a.gok or [])
+    if a.bestand:
+        gokken += lees_gokken(Path(a.bestand).read_text(encoding="utf-8"))
+    if not gokken:
+        print("Geef gokken op, of --bestand met één gok per regel.", file=sys.stderr)
+        return 1
+    return _status_wijzig(a, "fout_geraden", gokken)
 
 
 def cmd_richting(a):
@@ -175,7 +201,8 @@ def maak_parser() -> argparse.ArgumentParser:
     s.set_defaults(func=cmd_analyse)
 
     s = sub.add_parser("fout", help="voeg op de radio fout geraden antwoord(en) toe")
-    s.add_argument("gok", nargs="+")
+    s.add_argument("gok", nargs="*")
+    s.add_argument("--bestand", help="tekstbestand met geplakte lijst (één gok per regel)")
     status_arg(s)
     s.set_defaults(func=cmd_fout)
 

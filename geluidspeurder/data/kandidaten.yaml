@@ -79,7 +79,7 @@
 - {naam: "Sleutel in het slot omdraaien", cat: huis, en: ["turning a key in a door lock", "unlocking a door with a key"], k: [impuls, snelle_tikjes, kort], alias: [sleutel omdraaien, slot]}
 - {naam: "Sleutelbos rammelen", cat: persoonlijk, en: ["a bunch of keys jingling", "keys jangling"], k: [galm, hoog, snelle_tikjes], alias: [sleutels, sleutelbos]}
 - {naam: "Sleutelbos op tafel gooien", cat: persoonlijk, en: ["keys dropped on a table", "throwing keys onto a wooden table"], k: [impuls, galm, hoog, kort], alias: [sleutels neergooien]}
-- {naam: "Deurbel (ding-dong)", cat: huis, en: ["a doorbell ringing ding dong", "door chime"], k: [toon, galm], alias: [deurbel, bel]}
+- {naam: "Deurbel (ding-dong)", cat: huis, en: ["a doorbell ringing ding dong", "door chime"], k: [toon, galm], alias: [deurbel, bel, knopje van een ouderwetse deurbel duwen]}
 - {naam: "Brievenbus klep", cat: huis, en: ["a letterbox flap snapping shut", "mail slot flap"], k: [impuls, galm, kort], alias: [brievenbus, post]}
 - {naam: "Rolluik naar beneden laten", cat: huis, en: ["a roller shutter rolling down", "rolling shutter rattling"], k: [snelle_tikjes, lang], alias: [rolluik]}
 - {naam: "Lichtschakelaar aan/uit", cat: huis, en: ["a light switch being flipped", "light switch click"], k: [impuls, kort], alias: [lichtknopje, schakelaar]}
@@ -135,7 +135,7 @@
 - {naam: "Printer die papier uitprint", cat: kantoor, en: ["a printer printing a page", "inkjet printer"], k: [toon, continu, ritmisch], alias: [printer]}
 - {naam: "Papierversnipperaar", cat: kantoor, en: ["a paper shredder", "shredding paper"], k: [toon, ruis, continu], alias: [versnipperaar]}
 - {naam: "Envelop openscheuren", cat: kantoor, en: ["tearing open an envelope", "envelope ripping"], k: [ruis, kort], alias: [envelop]}
-- {naam: "Rolmaat die terugschiet", cat: gereedschap, en: ["a tape measure retracting and snapping shut", "measuring tape snapping back"], k: [snelle_tikjes, impuls, galm, kort], alias: [rolmaat, meetlint]}
+- {naam: "Rolmaat die terugschiet", cat: gereedschap, en: ["a tape measure retracting and snapping shut", "measuring tape snapping back"], k: [snelle_tikjes, impuls, galm, kort], alias: [rolmaat, meetlint, metalen meetlint terug naar binnen laten schieten]}
 - {naam: "Paperclip / punaise in een doosje schudden", cat: kantoor, en: ["shaking a box of paper clips", "small metal objects rattling in a tin"], k: [snelle_tikjes, galm, hoog], alias: [paperclips, punaises]}
 - {naam: "Klittenband losscheuren", cat: kleding, en: ["ripping velcro apart", "hook and loop fastener tearing"], k: [ruis, snelle_tikjes, kort], alias: [klittenband, velcro]}
 
@@ -262,13 +262,13 @@
 - {naam: "Karabijnhaak dichtklikken", cat: sport, en: ["a carabiner gate snapping shut", "metal carabiner clip click"], k: [impuls, galm, hoog, kort], alias: [karabijnhaak, musketon]}
 - {naam: "Deksel op een metalen koekjestrommel drukken", cat: keuken, en: ["pressing the lid onto a metal cookie tin", "closing a tin box lid"], k: [impuls, galm, kort], alias: [koekjestrommel, koekjesdoos, blikken doos]}
 - {naam: "Hendel van de broodrooster naar beneden duwen", cat: keuken, en: ["pushing down the lever of a toaster until it clicks", "toaster lever locking down"], k: [impuls, galm, kort, meerdelig], alias: [broodrooster indrukken]}
-- {naam: "Beugelfles openen (plop)", cat: eten_drinken, en: ["opening a swing top bottle with a pop", "flip top bottle opening plop and wire clink"], k: [impuls, laag, galm, kort], alias: [beugelfles, grolschfles]}
-- {naam: "Fietsstandaard omhoog laten klappen (veer)", cat: vervoer, en: ["a bicycle kickstand snapping up with a spring", "kickstand spring clank"], k: [impuls, galm, kort], alias: [fietsstandaard omhoog]}
+- {naam: "Beugelfles openen (plop)", cat: eten_drinken, en: ["opening a swing top bottle with a pop", "flip top bottle opening plop and wire clink"], k: [impuls, laag, galm, kort], alias: [beugelfles, grolschfles, beugelsluiting openen]}
+- {naam: "Fietsstandaard omhoog laten klappen (veer)", cat: vervoer, en: ["a bicycle kickstand snapping up with a spring", "kickstand spring clank"], k: [impuls, galm, kort], alias: [fietsstandaard omhoog, het inklappen van een fietsstandaard]}
 - {naam: "Metalen haarklem / krokodillenklem dichtklikken", cat: persoonlijk, en: ["a metal hair clip snapping shut", "spring clip snap"], k: [impuls, galm, hoog, kort], alias: [haarklem, haarspeld, krokodillenklem]}
-- {naam: "Klapslot van een koffer of gereedschapskist", cat: huis, en: ["snapping the metal latch of a suitcase", "toolbox latch clasp snapping"], k: [impuls, galm, kort], alias: [kofferslot, klapslot, gereedschapskist]}
+- {naam: "Klapslot van een koffer of gereedschapskist", cat: huis, en: ["snapping the metal latch of a suitcase", "toolbox latch clasp snapping"], k: [impuls, galm, kort], alias: [kofferslot, klapslot, gereedschapskist, klepje van een aktetas openspringen]}
 - {naam: "Klem van een klembord laten dichtklappen", cat: kantoor, en: ["a clipboard clip snapping shut", "metal clipboard spring clip snap"], k: [impuls, galm, kort], alias: [klembord]}
 - {naam: "Tacker (nietpistool) afvuren", cat: gereedschap, en: ["firing a manual staple gun", "staple gun snap"], k: [impuls, galm, kort], alias: [tacker, nietpistool]}
-- {naam: "Film doordraaien en afdrukken met een analoge camera", cat: persoonlijk, en: ["winding film and pressing the shutter of an old film camera", "film camera shutter click"], k: [impuls, snelle_tikjes, meerdelig, kort], alias: [analoge camera, fototoestel]}
+- {naam: "Film doordraaien en afdrukken met een analoge camera", cat: persoonlijk, en: ["winding film and pressing the shutter of an old film camera", "film camera shutter click"], k: [impuls, snelle_tikjes, meerdelig, kort], alias: [analoge camera, fototoestel, sluiter van een vintage camera klikken]}
 - {naam: "Architectenlamp (bureaulamp met veren) verstellen", cat: huis, en: ["adjusting a spring desk lamp arm with springs twanging", "anglepoise lamp spring clank"], k: [galm, impuls, kort], alias: [bureaulamp, architectenlamp]}
 - {naam: "Snelspanner van een fietswiel dichtklappen", cat: vervoer, en: ["closing a bicycle quick release lever", "quick release skewer snapping shut"], k: [impuls, galm, kort], alias: [snelspanner]}
 - {naam: "Kroonkurk die na het openen op tafel valt", cat: eten_drinken, en: ["a bottle cap popped off and clattering on a table", "metal bottle cap falling and rattling"], k: [impuls, galm, hoog, kort], alias: [dopje, kroonkurk valt]}

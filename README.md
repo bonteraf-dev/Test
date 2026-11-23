@@ -100,6 +100,13 @@ fragment en analyseert automatisch alleen het geluid (uitzetten met `--geen-auto
 antwoorden kun je als CSV-export inlezen: `geluid fout --bestand foute-antwoorden.csv` (alleen de kolom
 "Antwoord" wordt gebruikt).
 
+### Videotips uitpluizen
+Soms is de tip een filmpje waarin honderden voorwerpen razendsnel voorbijflitsen. Dit commando zet elk
+voorwerp genummerd (met tijdstip) op overzichtsvellen, zodat je ze rustig kunt doorlopen en afstrepen:
+```bash
+geluid video tip.mp4 --draai 90      # --draai als het scherm gedraaid gefilmd is
+```
+
 ### Natuurkundige vingerafdruk
 Na een klap op metaal blijven dunne tonen hangen. Hun onderlinge verhoudingen verraden de vorm van het
 trillende voorwerp: een los staafje (1 : 2,76 : 5,40 : 8,93), een ring (1 : 2,83 : 5,42), een aan één kant
@@ -138,5 +145,6 @@ De tests gebruiken synthetische geluiden met bekende eigenschappen (stuiterbal, 
 | `geluidspeurder/status.py` | foute gokken, hints, slimme naamvergelijking |
 | `geluidspeurder/claude_brein.py` | Claude-brainstorm en eindoordeel |
 | `geluidspeurder/online.py` | vergelijken met echte opnames (BBC Sound Effects) |
+| `geluidspeurder/video.py` | videotips: elk voorwerp uit een carrousel op overzichtsvellen |
 | `geluidspeurder/pipeline.py` | alles aan elkaar geknoopt |
 | `geluidspeurder/data/kandidaten.yaml` | ruim 240 alledaagse geluiden |

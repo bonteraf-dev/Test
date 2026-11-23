@@ -216,6 +216,17 @@ def cmd_online(a):
     return 0
 
 
+def cmd_video(a):
+    from .video import maak_overzicht
+
+    uit = Path(a.uit or (Path("resultaten") / (Path(a.video).stem + "_voorwerpen")))
+    n, vellen = maak_overzicht(a.video, uit, draai=a.draai)
+    print(f"{n} voorwerpen gevonden, {len(vellen)} overzichtsvel(len) in {uit}/")
+    for v in vellen:
+        print(f"  {v}")
+    return 0
+
+
 def cmd_opnemen(a):
     if not shutil.which("ffmpeg"):
         print("ffmpeg is nodig om op te nemen.", file=sys.stderr)
@@ -314,6 +325,12 @@ def maak_parser() -> argparse.ArgumentParser:
     s.add_argument("--eind", type=_tijd)
     s.add_argument("--geen-ai", action="store_true")
     s.set_defaults(func=cmd_online)
+
+    s = sub.add_parser("video", help="zet elk voorwerp uit een videotip (snelle carrousel) op overzichtsvellen")
+    s.add_argument("video")
+    s.add_argument("--draai", type=int, default=0, help="beelden draaien (graden, bijv. 90 of -90)")
+    s.add_argument("--uit", help="uitvoermap (standaard resultaten/<naam>_voorwerpen)")
+    s.set_defaults(func=cmd_video)
 
     s = sub.add_parser("opnemen", help="neem een (radio)stream op met ffmpeg")
     s.add_argument("url", help="stream-URL van de radiozender")
